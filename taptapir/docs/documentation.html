@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <!-- <link rel="stylesheet" href="sswg.css"> -->
+    <link rel="stylesheet" href="taptapir.css">
+</head>
+<body>
+<left>
+<title>Taptapir Documentation</title>
+
+<a href="index.html" style="text-decoration:none">
+    <div id="header">
+        Taptapir
+    </div>
+</a>
+<br><br>
+<div class="project_title">Documentation</div>
+<br><br><br><br>
+
+
+
+<div class="project_container" id="Taptapir" style="width:650px;">
+    <div class="project_title">taptapir</div>
+    <div class="project_description">
+
+Global functions
+<div class="code_block">set_orientation(<green>'vertical'</green> / <green>'horizontal'</green>)
+set_window_color()
+set_background_color()
+set_scale()   <gray># scale game view</gray>
+set_fullscreen(False / True)
+</div>
+Global variables
+<div class="code_block">ASSETS_FOLDER = <green>''</green>
+entities = []
+scene       <gray># default parent for entities.</gray>
+camera
+camera.ui   <gray># default parent for ui elements. Not relevant if you never move the camera or change camera.fov.</gray>
+aspect_ratio
+
+top_left =      [-.<yellow>5</yellow>, .<yellow>5</yellow>*aspect_ratio]
+top_right =     [.<yellow>5</yellow>, .<yellow>5</yellow>*aspect_ratio]
+bottom_left =   [-.<yellow>5</yellow>, -.<yellow>5</yellow>*aspect_ratio]
+bottom_right =  [.<yellow>5</yellow>, -.<yellow>5</yellow>*aspect_ratio]
+top =           [<yellow>0</yellow>, .<yellow>5</yellow>*aspect_ratio]
+bottom =        [<yellow>0</yellow>, -.<yellow>5</yellow>*aspect_ratio]
+left =          [-.<yellow>5</yellow>, <yellow>0</yellow>]
+right =         [.<yellow>5</yellow>, <yellow>0</yellow>]
+</div>
+Entity
+<div class="code_block"><olive>Entity</olive>
+.parent
+.children
+.enabled
+.visible_self
+.name
+
+.position / .xy
+.x / .y
+.z   <gray># sorting</gray>
+
+.scale = [<yellow>1</yellow>,<yellow>1</yellow>]
+.scale_x / .scale_y
+.origin
+.look_at()
+
+.color
+.alpha
+.texture = <green>'some_image.png'</green>
+.roundness   <gray># 0</gray>
+.padding
+.shadow      <gray># False / True</gray>
+
+.text = <green>''</green>
+.text_color
+.text_size
+.text_origin
+.fit_to_text()
+
+.on_click
+.on_enable
+.on_disable
+
+.ignore_collision
+.draggable    <gray># False / True</gray>
+.dragging     <gray># to check if it's being currently dragged.</gray>
+.lock_x / .lock_y
+.min_x / .max_x / .min_y /.max_y
+.snap_x / .snap_y
+
+.tileset_size
+.tile_coordinate
+
+</div>
+Classes
+<div class="code_block">Button
+Text
+Scene
+goto_scene(<green>'name'</green>)
+HealthBar
+</div>
+Math
+<div class="code_block">lerp()
+clamp()
+random_int()
+random_choice()
+random_color()
+lists_are_equal()
+</div>
+</div>
+<br>
+<div class="project_container" id="Taptapir" style="width:650px;">
+    <div class="project_title">sunsnake</div>
+    <div class="project_description">
+Log
+<div class="code_block"><blue>print</blue>()
+</div>
+if-statements
+<div class="code_block"><purple>if</purple> a and b or <purple>not</purple> c:
+    <blue>print</blue>(<green>'success'</green>)
+</div>
+Functions
+<div class="code_block"><purple>def</purple> my_function():
+    <blue>print</blue>(<green>'hi'</green>)
+</div>
+Arrays
+<div class="code_block">my_list = [<yellow>6</yellow>,<yellow>2</yellow>,<yellow>9</yellow>,<yellow>0</yellow>,<yellow>3</yellow>]
+</div>
+Range
+<div class="code_block"><purple>for</purple> i in <blue>range</blue>(<yellow>8</yellow>):
+    <blue>print</blue>(i)
+</div>
+<div class="code_block"><purple>for</purple> i in <blue>range</blue>(<yellow>1</yellow>, <yellow>8</yellow>): <gray># from 1 to 8</gray>
+    <blue>print</blue>(i)
+</div>
+<div class="code_block"><purple>for</purple> i in <blue>range</blue>(<yellow>1</yellow>, <yellow>8</yellow>, <yellow>2</yellow>): <gray># from 1 to 8, with a step of 2</gray>
+    <blue>print</blue>(i)
+</div>
+Shorthand range:
+<div class="code_block"><purple>for</purple> i in <yellow>8</yellow>:
+    <blue>print</blue>(i)
+</div>
+Enumerate
+<div class="code_block">my_list = [<green>'sun'</green>, <green>'snake'</green>, <green>'script'</green>]
+<purple>for</purple> i, e in enumerate(my_list):
+    <blue>print</blue>(i, e)
+
+&gt;&gt;&gt; <yellow>0</yellow> <green>'sun'</green>
+&gt;&gt;&gt; <yellow>1</yellow> <green>'snake'</green>
+&gt;&gt;&gt; <yellow>2</yellow> <green>'script'</green>
+</div>
+Iterate array
+<div class="code_block"><purple>for</purple> e in my_list:
+    <blue>print</blue>(e)
+</div>
+2D Array
+<div class="code_block">Array_2d(width, height)
+</div>
+Macros
+<div class="code_block"><gray># replace the first argument with the second argument</gray>
+sunsnake.define(*style, <olive>scale</olive>=.<yellow>2</yellow>, <olive>color</olive>=hsv(<yellow>3</yellow><yellow>0</yellow><yellow>0</yellow>,<yellow>1</yellow>,<yellow>1</yellow>), roundness=.<yellow>2</yellow><yellow>5</yellow>, text_<olive>origin</olive>=[<yellow>0</yellow>,<yellow>0</yellow>])
+
+brush_size = [<yellow>1</yellow>,<yellow>1</yellow>]
+
+<gray># use the defined macro to prevent code duplication</gray>
+plus_button = <olive>Entity</olive>(*style, x=-.<yellow>1</yellow>, <olive>text</olive>=<green>'+'</green>)
+plus_button.on_click = def():
+    brush_size = [e*<yellow>1</yellow>.<yellow>5</yellow> <purple>for</purple> e in brush_size]
+
+minus_button = <olive>Entity</olive>(*style, x=.<yellow>1</yellow>, <olive>text</olive>=<green>'-'</green>)
+minus_button.on_click = def():
+    brush_size = [e*<yellow>1</yellow>/<yellow>1</yellow>.<yellow>5</yellow> <purple>for</purple> e in brush_size]
+</div>
+List Comprehension
+<div class="code_block">my_list = [<yellow>1</yellow>, <yellow>0</yellow>, <yellow>9</yellow>, <yellow>4</yellow>, <yellow>8</yellow>]
+my_list = [e <purple>for</purple> e in my_list <purple>if</purple> e &lt; <yellow>5</yellow>]
+<blue>print</blue>(my_list)
+
+&gt;&gt;&gt; [<yellow>1</yellow>, <yellow>0</yellow>, <yellow>4</yellow>]
+</div>
+Coroutines/Delay
+<div class="code_block">e = Button(<olive>scale</olive>=.<yellow>2</yellow>, <olive>text</olive>=<green>'?'</green>)
+e.on_click = <purple>def</purple>():
+    <blue>after</blue> <yellow>0.2</yellow>s:
+        e.text = <green>'!!'</green>
+</div>
+
+</div>
+</body>
+</html>
