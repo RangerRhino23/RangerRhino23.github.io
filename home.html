@@ -1,79 +1,60 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>RangerRhino23's Website!</title>
-  <style>
-    body {
-    background-color: tan;
-    background-image: linear-gradient(hsl(34, 64%, 69%), hsl(34, 34%, 69%) 10%, hsl(34, 44%, 69%) 35%, black 75%);
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-
-  footer {
-    background-color: black;
-  }
-
-  h1 {
-    color: gray;
-    margin-top: 50px;
-  }
-
-  h2 {
-    color: white;
-    margin-top: 50px;
-    font-size: 25px
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .button {
-    background-color: white;
-    color: black;
-    border: none;
-    padding: 10px 20px;
-    text-decoration: none;
-    margin: 10px;
-    font-size: 18px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px #9b9b9b;
-  }
-
-  .button:hover {
-    background-color: gray;
-    color: white;
-  }
-
-  .paragraph {
-        width: 550px;
-        margin: auto;
-        padding:10px;
+  <head>
+    <title>Home | RangerRhino23</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <style>
+      img {
+        width: 250px;
+        height: 350px;
+        border-radius: 5px;
+        object-fit: cover;
       }
-  </style>
-</head>
-<body>
-  <h1>RangerRhino23's Website</h1>
-  <h2 class="paragraph">Hello! My name is RangerRhino23.<br>
-    I am a teenager who enjoys working on computers as well as coding fun projects in my free time.<br>
-    I am interested in Computer Programming and Mathmatics.<br>
-    I'm currently learning the finer details of Python as well as a little Html, Javascript, and CSS.<br>
-    I am always looking to collaborate on any programming related projects!<br>
-    You can reach me on Discord or by Emailing me:<br>
-    <a href="mailto:RangerRhino23@outlook.com">Email Me!</a><br>
-    Discord: RangerRhino#4484<br>
-    Here is a list to some cool projects I'm currently working on.<br>
-    You can always visit my <a href="https://github.com/RangerRhino23">Github</a> and see some more projects.<br>
-    *Infinite Horizons: A open space exploration game <a href="https://github.com/RangerRhino23/Infinite-Horizons">Github Page</a><br>
-    *PyWeek 35: A Bi-Anual Python Game Jam <a href="https://github.com/RangerRhino23/Pyweek35">Github Page</a><br>
-    As always, feel free to contact me for any questions or if you want to collaborate with me!
-  </h2>
-</body>
-<footer>
-  <h1></h1>
-</footer>
+
+      .paragraph {
+            color: whitesmoke;
+            width: 500px;
+            margin: auto;
+            font-size: larger;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>RangerRhino23</h1>
+    <a class="button" href="#about">About Myself</a>
+    <a class="button" href="#programming-life">Programming Life</a>
+    <a class="button" href="portfolio">Portfolio</a>
+
+    <!--ABOUT MYSELF-->
+    <h2 id="about">About Myself</h2>
+    <div class="paragraph">
+      <p><b>
+        Hello! My name is Ryan Dahlke but many know me online as RangerRhino23. I am a Content Creator as well as a Computer Programming Developer.
+        I enjoy programming in Python as well as HTML, CSS, and Javascript. I enjoy participating in different Python Game Jams
+        as well as working on different projects with other Python Developers. I also sometimes make Minecraft content with friends on youtube.
+        Outside of my online life, I am involved in a few different groups including Boy Scouts, Order of the Arrow, and school sports. Here are a just
+        a few pictures of different activities I participate in outside of programming and content creation.
+      </b></p>
+    </div>
+    <img src="pictures/home-page/m16.JPG" alt="Ryan Dahlke shooting an M16 Rifle" />
+    <img src="pictures/home-page/highjump.JPG" alt="Ryan Dahlke at his first middle school Track Meet"/>
+
+    <!--PROGRAMMING PROJECTS-->
+    <h2 id="programming-life">Programming Life</h2>
+    <div class="paragraph">
+      <p><b>
+        Although my programming carrer has just begun, I have done a bunch of different things involving programming. I started to learn about computer programming in
+        the fall of 2021. In math class, there was a math problem involving a spinner and different colors the spinner could land on. The math teacher breifly said something
+        about the problem but skipped over it cause it was a very complicated problem to solve. After class, I had asked him if a computer simulation could figure out the answer
+        to the problem and he agreed that a simulation could solve it so he had me write a simulation to solve the problem. This introduced me into Python, a simple programming
+        language, and since then, I have built countless projects using Python.
+      </b></p>
+    </div>
+  </body>
+  <footer style="margin-top: 50px; margin-bottom: 20px">
+    <a class="button" style="background-color: black; color: white" href="#"
+      >Back to Top</a
+    >
+  </footer>
 </html>
