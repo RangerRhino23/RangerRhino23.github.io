@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cookie Clicker | RangerRhino23</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <style>
+        html {
+            background-color:tan;
+        }
+    </style>
+  </head>
+    <script src="taptapir/taptapir.js"></script>
+    <script type="text/sunsnake">
+
+#Global Functions
+set_orientation('horizontal')
+set_window_color('rgb(23,23,23)')
+set_scale(0.95)
+
+#Variables
+dx = 0.005
+dy = 0.005
+
+def update():
+    #lpaddle movement
+    if held_keys['w']:
+        if lpaddle.y <= 0.4:
+            lpaddle.y += 0.005
+    if held_keys['s']:
+        if lpaddle.y >= -0.4:
+            lpaddle.y -= 0.005
+    
+    #rpaddle movement
+    if held_keys['up arrow']:
+        if rpaddle.y <= 0.4:
+            rpaddle.y += 0.005
+    if held_keys['down arrow']:
+        if rpaddle.y >= -0.4:
+            rpaddle.y -= 0.005
+
+    #ball movement
+    ball.x += dx
+    ball.y += dy
+    if ball.y >=ceiling.y or ball.y <=floor.y:
+        dy *= -1
+    if ball.x >=rpaddle.x and ball.y >=rpaddle.y - 0.1 and ball.y <=rpaddle.y + 0.1:
+        dx *= -1
+    if ball.x <=lpaddle.x and ball.y >=lpaddle.y - 0.1 and ball.y <=lpaddle.y + 0.1:
+        dx *= -1
+    
+    #ball lose detection
+    if ball.x >= rwall.x:
+        dy = 0
+        dx = 0
+    if ball.x <= lwall.x:
+        dy = 0
+        dx = 0
+
+ball = Entity(roundness=.25, color=color.white, scale=0.025)
+
+lpaddle = Entity(color=color.blue, scale_x=0.02, scale_y=0.2, x=-.8)
+
+rpaddle = Entity(color=color.green, scale_x=0.02, scale_y=0.2, x=.8)
+
+#Walls for collision
+ceiling = Entity(color=color.white, scale_y=0.02, scale_x=2, y=0.5)
+floor = Entity(color=color.white, scale_y=0.02, scale_x=2, y=-0.5)
+lwall = Entity(color=color.white, scale_x=0.02, scale_y=1, x=-0.885)
+rwall = Entity(color=color.white, scale_x=0.02, scale_y=1, x=0.885)
+
+#Text
+logo_text = Text(text='Pong By: RangerRhino23', x=-.61,y=.475, text_origin=[0,0], scale=0.75, text_size=4, text_color=color.white)
+    </script><script src="taptapir/sunsnake_compiler.js"></script></html>
