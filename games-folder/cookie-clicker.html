@@ -52,7 +52,7 @@ cookie.on_click = def():
 cookieMaker = Entity(texture='../pictures/cookie-clicker/cookiemaker.png', scale=.2, x=.6,y=.1)
 cookieMaker.on_click = def():
     if score>=multiplierCost:
-        score -= 100
+        score -= multiplierCost
         multiplier += 1
         multiplierCost += 10
         cookieMaker.scale = .2
@@ -61,7 +61,7 @@ cookieMaker.on_click = def():
 cookieMultiplyer = Entity(texture='../pictures/cookie-clicker/multiplier.png', scale=.2, x=.6, y=-.1)
 cookieMultiplyer.on_click = def():
     if score>=passiveCost:
-        score -= 100
+        score -= passiveCost
         passive += 1
         passiveCost += 10
         cookieMultiplyer.scale = .2
