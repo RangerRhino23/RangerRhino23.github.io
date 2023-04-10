@@ -1,0 +1,233 @@
+<header>
+    <style>
+        .menu {
+              list-style-type: none;
+              margin: 0;
+              margin-top: 8px;
+              margin-left: 8px;
+              width: 97.5%;
+              padding: 0;
+              overflow: hidden;
+              background-color: #555;
+              border-radius: 40px;
+            }
+    
+            .menu li {
+              float: left;
+            }
+    
+            .menu li a {
+              display: block;
+              color: white;
+              text-align: center;
+              font-size: 16.75px;
+              padding: 14px 16px;
+              text-decoration: none;
+            }
+    
+            .menu li a:hover {
+              background-color: #444;
+            }
+    </style>
+    <ul class="menu">
+      <li><img style="margin-left: 6px; margin-right: 6px; margin-top: 5px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="../icon.png"></li>
+      <li><a href="../home">Home</a></li>
+      <li><a href="../portfolio">Portfolio</a></li>
+      <li><a href="../games">Games</a></li>
+  </ul>
+</header>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Platformer | RangerRhino23</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+  </head>
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function (event) {
+    if (event.keyCode == 123) {
+        return false;}}
+    document.addEventListener('keydown', function(event) {
+    if (event.shiftKey) {
+        return false;}});
+  </script>
+  
+    <script src="taptapir/taptapir.js"></script>
+    <script type="text/sunsnake">
+
+#Global Functions
+ASSETS_FOLDER = 'platformer-assets/'
+set_orientation('landscape')
+set_background_color('rgb(210,180,140)')
+set_window_color('rgb(23,23,23)')
+set_scale(1.0)
+
+#Editor Camera Function
+def EditorCamera():
+    editorMode = True
+
+#Variables
+jumping = False
+collider_objects = []
+moving_blocks = []
+gravity = 0
+velocity = 0
+speed = 0.005
+movingBlockSpeed = 0.002
+groundLevel=0
+collidingLeft=False
+collidingRight=False
+startLevel = False
+editorMode = False
+
+#Block Class
+def Block(x=0,y=0,texture='textures/grass_side.png'):
+    block = Entity(x=x,y=y,z=player.z,texture=texture, scale=0.05,ypos=y+.05)
+    collider_objects.append(block)
+    return block
+
+#Moving Block Class
+def Moving_Block(x=0,y=0,fromX=0.8,toX=1.2,texture='textures/moving_platform.png'):
+    moving_block = Entity(x=x,y=y,z=player.z,texture=texture,scale=0.05,ypos=y+.05,fromX=fromX,toX=toX, movingRight=True)
+    collider_objects.append(moving_block)
+    moving_blocks.append(moving_block)
+    return moving_block
+
+
+def update():
+    speed = 0.005
+    ground = groundLevel
+
+    #Death Counter
+    deaths_text.x = camera.x
+    deaths_text.y = camera.y+.47
+    deaths_text.text = `Deaths: ${deaths}`
+
+    #Smooth Camera Follow
+    sky.x = camera.x * 1
+    sky.y = camera.y * 1
+    if not editorMode:
+        camera.x = lerp(camera.x, player.x, .025)
+        camera.y = lerp(camera.y, player.y+.2, .025)
+
+    #Collision Detection
+    for e in collider_objects:
+        if player.x>=e.x-0.05 and player.x<=e.x and player.y == e.y:
+            collidingRight=True
+        if player.x<=e.x+0.05 and player.x>=e.x and player.y == e.y:
+            collidingLeft=True
+        if e.x > 0:
+            if player.y >= e.ypos and player.x >= e.x - 0.042 and player.x <= e.x + 0.042:
+                ground = max(ground, e.ypos)
+        elif e.x < 0:
+            if player.y >= e.ypos and player.x <= e.x + 0.042 and player.x >= e.x - 0.042:
+                ground = max(ground, e.ypos)
+        else:
+            ground = max(ground, 0)
+        if player.y>=e.y+.01:
+            collidingRight=False
+            collidingLeft=False
+    
+    #Player Movement
+    if editorMode:
+        if held_keys['w']:
+            camera.y += speed
+        if held_keys['a']:
+            camera.x -= speed
+        if held_keys['s']:
+            camera.y -= speed
+        if held_keys['d']:
+            camera.x += speed
+    if held_keys['d'] and not collidingRight and not editorMode:
+        player.x += speed
+        collidingLeft=False
+        player.texture='textures/player_right.png'
+    if held_keys['a'] and not collidingLeft and not editorMode:
+        player.x -= speed
+        collidingRight=False
+        player.texture='textures/player_left.png'
+
+    if velocity <= 0:
+        if player.y >= ground:
+            gravity += 0.00035
+            player.y -= 0.0007 + gravity
+        if player.y <= ground:
+            jumping = False
+            player.y = ground
+    if velocity > 0:
+        player.y += velocity / 60
+        velocity -= .1
+    if held_keys['shift'] and not collidingLeft and not collidingRight and not editorMode:
+        player.x += (held_keys['d'] - held_keys['a']) * speed
+
+    #Sets the player at the start
+    if startLevel == True:
+        player.x = blockOne.x
+        player.y = blockOne.y + 0.05
+        startLevel = False
+
+    #Death
+    if player.y == 0:
+        startLevel = True
+        deaths += 1
+
+    #Moving Platoform Teleportation
+    for e in moving_blocks:
+        if player.x>=e.x-0.05 and player.x<=e.x+0.05:
+            if player.y<=e.y+0.05:
+                player.x = e.x
+            if player.y>=e.y-0.05 and player.y<=e.y+0.05:
+                player.x = e.x
+    
+    #Moving Platform Movement
+    for e in moving_blocks:
+        if e.x >= e.toX:
+            e.movingRight = False
+        
+        if e.x<=e.fromX:
+            e.movingRight = True
+        
+        if e.movingRight:
+            if e.x<=e.toX:
+                e.x += movingBlockSpeed
+            
+        if not e.movingRight:
+            if e.x>=e.fromX:
+                e.x -= movingBlockSpeed
+
+def input(key):
+    if not editorMode:
+        if key == 'space' and not jumping:
+            ground=player.y
+            velocity = 1.2
+            gravity = 0
+            jumping = True
+
+player = Entity(texture='textures/player_right.png', scale=0.05)
+sky = Entity(texture='textures/sky.png', scale=[1.8,1.005], z=10)
+
+deaths = 0
+deaths_text = Text(text='Deaths: 00', text_origin=[0,0], scale=0.75, y=-.85, text_size=5, text_color=color.white, x=-.38)
+
+startLevel = True
+###################
+###BUILDING ZONE###
+###################
+
+blockOne = Block(x=0.1,y=0.15)
+blockTwo = Block(x=0.2,y=0.2)
+blockThree = Block(x=0.3,y=0.2)
+blockFour = Block(x=0.4,y=0.3)
+blockFive = Block(x=0.5,y=0.35)
+blockSix = Block(x=0.7,y=0.3)
+movingBlockOne = Moving_Block(x=0.75,y=0.3,fromX=0.75,toX=1.2)
+blockSeven = Block(x=1.25,y=0.3)
+movingBlockTwo = Moving_Block(x=1.3,y=0.4,fromX=1.3,toX=1.6)
+blockEight = Block(x=1.65,y=0.35)
+blockNine = Block(x=1.75,y=0.35)
+finishFlag = Entity(scale=[0.05,0.1],texture='textures/finish.png',x=1.75,y=0.425)
+
+#temp = Block(x=0.2)
+#block = Block(x=0.25,y=.05)
+#minusblock = Block(x=-.5)
+    </script><script src="taptapir/sunsnake_compiler.js"></script></html>
