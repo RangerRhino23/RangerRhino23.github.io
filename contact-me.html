@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact Me | RangerRhino23</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <script>
+      window.onload = function() {
+        document.getElementById("enter-hunt").addEventListener("click", function() {
+          window.location.href = "the-hunt.html";
+        });
+      };
+    </script>
+    <style>
+      .img-preset {
+        width: 250px;
+        height: 350px;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+
+      .paragraph {
+            color: whitesmoke;
+            width: 500px;
+            margin: auto;
+            font-size: larger;
+        }
+
+        body {
+          background-color: tan;
+          background-image: linear-gradient(tan 0%, black 12%);
+          color: white;
+          font-family: 'Verdana', sans-serif;
+          text-align: center;
+        }
+
+        form {
+          margin: auto;
+          width: 50%;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        input[type=text], input[type=email], textarea {
+          width: 100%;
+          padding: 10px;
+          margin: 5px 0 15px 0;
+          border: none;
+          border-radius: 5px;
+          background-color: #f2f2f2;
+          box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        input[type=submit] {
+          background-color: tan;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+          box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        input[type=submit]:hover {
+          background-color: tan;
+        }
+        label {
+          font-size: 16px;
+          font-weight: bold;
+          display: block;
+          margin-bottom: 5px;
+        }
+    </style>
+  </head>
+  <header>
+    <ul class="menu">
+      <li><img id="enter-hunt" style="margin-left: 6px; margin-right: 6px; margin-top: 5px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="icon.png" alt="Clickable Image"></li>
+      <li><a href="home">Home</a></li>
+      <li><a href="portfolio">Portfolio</a></li>
+      <li><a href="games">Games</a></li>
+  </ul>
+  </header>
+  <body>
+    <br><br><br><br><br><br><br>
+    <h1>Contact Me!</h1>
+
+    <br><br><br>
+
+    <!--CONTACT ME-->
+    <h2 id="contact-me">Contact Me</h2>
+    <div class="paragraph">
+      <p><b>
+        If you have any questions or feeback of any projects or would like to collaborate with me on any projects, feel free to contact me through the panel below or by using one of my socials!
+        I can't link my Discord account so here it is: Rangerrhino#4484
+      </b></p>
+    </div>
+    <br>
+    <a class="button" style="background-color: black; color: white" href="mailto:RangerRhino23@outlook.com" target="_blank">Email Me!</a>
+    <a class="button" style="background-color: black; color: white" href="https://github.com/RangerRhino23" target="_blank">Github</a>
+    <a class="button" style="background-color: black; color: white" href="https://youtube.com/@RangerRhino23" target="_blank">YouTube</a>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    
+
+  </body>
+  <footer style="margin-top: 50px; margin-bottom: 20px">
+    <a id="backtotopbtn" class="button" style="background-color: black; color: white">Back to Top</a>
+    <script>
+      // Get the button element
+      var scrollToTopBtn = document.getElementById("backtotopbtn");
+  
+      // Show or hide the button based on scroll position
+      window.onscroll = function() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          scrollToTopBtn.style.display = "block";
+        } else {
+          scrollToTopBtn.style.display = "none";
+        }
+      };
+  
+      // Function to scroll to top with smooth animation
+      function scrollToTop() {
+        var currentPosition = document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentPosition > 0) {
+          window.requestAnimationFrame(scrollToTop);
+          window.scrollTo(0, currentPosition - currentPosition / 20);
+        }
+      }
+  
+      // Add click event listener to the button
+      scrollToTopBtn.addEventListener("click", scrollToTop);
+    </script>
+  </footer>
+</html>
