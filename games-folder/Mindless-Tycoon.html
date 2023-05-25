@@ -1,0 +1,113 @@
+<html>
+    <title>Index</title>
+
+<body>
+    <script src="taptapir/taptapir.js"></script>
+<script type="text/sunsnake">
+
+# Global Functions
+ASSETS_FOLDER = 'Mindless-Tycoon-Assets'
+set_orientation('horizontal')
+set_window_color('#194525')
+set_background_color('black')
+
+
+# Variables
+playerSpeed = 0.009
+foods = []
+distance_2d = distance
+food_cooldown = 0
+score = 0
+boostCooldown = 0
+
+def Food():
+    food = Entity(scale=0.025, texture='food.png', roundness=0.9, x=(random_int(-800,800)/1000),y=(random_int(-550,550)/1000))
+    foods.append(food)
+    return food
+
+# Player Movement
+def playerMovement():
+    if held_keys['w']:
+        player.y += playerSpeed
+    if held_keys['a']:
+        player.x -= playerSpeed
+    if held_keys['s']:
+        player.y -= playerSpeed
+    if held_keys['d']:
+        player.x += playerSpeed
+
+    if player.x >= 0.86:
+        player.x = 0.85
+    if player.x <= -0.86:
+        player.x = -0.85
+    if player.y >= 0.457:
+        player.y = 0.458
+    if player.y <= -0.457:
+        player.y = -0.458
+
+def update():
+    score_text.text = `Score: ${score}`
+    playerMovement()
+
+    food_cooldown += 1
+    if food_cooldown >= len(foods) or len(foods) <= 20:
+        Food()
+        food_cooldown = 0
+
+    #Player eats food
+    for food in foods:
+        dist = distance_2d(player.xy,food.xy)
+        if dist <= 0.065:
+            destroy(food)
+            foods.remove(food)
+            score += 1
+
+    if held_keys['left_shift']:
+        player.y += 0.02
+
+def input(key):
+    if key == 'g':
+        for i in range(5):
+            Food()
+
+
+
+score_text = Text(text='Score: 00', text_origin=[0,0], scale=0.75, y=0.45, text_size=6, text_color=color.white)
+player = Entity(scale=.075, texture='player.png')
+for i in range(10):
+    Food()
+
+
+def MobileControlsFunc():
+    if mobileMoveButton.y>-0.16:
+        mobileMoveButton.y=-0.16
+    if mobileMoveButton.y<-0.3:
+        mobileMoveButton.y=-0.3
+    if mobileMoveButton.x>=mobileMoveButtonLeft.x-0.2:
+        mobileMoveButton.x=mobileMoveButtonLeft.x-0.2
+    if mobileMoveButton.x > -0.7:
+        player.x+= playerSpeed
+    if mobileMoveButton.x < -0.78:
+        player.x-= playerSpeed
+    if not mobileMoveButton.dragging:
+        mobileMoveButton.x=-0.7
+        mobileMoveButton.y=-0.3
+def MobileControls():
+    Entity(update=MobileControlsFunc,alpha=0)
+    mobileMoveButton = Button(draggable=True,x=-0.7,y=-0.3,color=color.white,scale=.2)
+    mobileMoveButtonLeft=Entity(alpha=0,x=-0.3,y=-0.3,scale=.01,parent=camera)
+    mobileMoveButtonRight=Entity(alpha=0,x=-0.48,y=-0.3,scale=.01,parent=camera)
+    mobileMoveButtonUp=Entity(alpha=0,x=-0.39,y=-0.18,scale=.01,parent=camera)
+
+#MobileControls()
+if(/Android/i.test(navigator.userAgent)){
+    MobileControls()
+}else {
+    print("This device is not supported for mobile controls.");
+    console.log("Device: " + navigator.userAgent);
+}
+
+</script>
+<script src="taptapir/sunsnake_compiler.js"></script>
+</body>
+</html>    
