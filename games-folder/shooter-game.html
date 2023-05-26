@@ -1,0 +1,221 @@
+<header>
+    <style>
+        .menu {
+              list-style-type: none;
+              margin: 0;
+              margin-top: 8px;
+              margin-left: 8px;
+              width: 97.5%;
+              padding: 0;
+              overflow: hidden;
+              background-color: #555;
+              border-radius: 40px;
+            }
+    
+            .menu li {
+              float: left;
+            }
+    
+            .menu li a {
+              display: block;
+              color: white;
+              text-align: center;
+              font-size: 16.75px;
+              padding: 14px 16px;
+              text-decoration: none;
+            }
+    
+            .menu li a:hover {
+              background-color: #444;
+            }
+    </style>
+    <ul class="menu">
+      <li><img style="margin-left: 6px; margin-right: 6px; margin-top: 5px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="../icon.png"></li>
+      <li><a href="../home">Home</a></li>
+      <li><a href="../portfolio">Portfolio</a></li>
+      <li><a href="../games">Games</a></li>
+  </ul>
+</header>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shooter Game | RangerRhino23</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <style>
+        html {
+            background-color:tan;
+        }
+    </style>
+  </head>
+<body>
+<script src="taptapir/taptapir.js"></script>
+<script type="text/sunsnake">
+
+# Global Functions
+set_orientation('horizontal')
+set_window_color('gray')
+#set_background_color('black')
+
+
+# Variables
+playerSpeed = 0.009
+enemieSpeed = 0.0009
+bulletSpeed = 0.009
+shootCooldown = 0
+shootCooldownTime = 30
+enemieCooldown = 0
+enemieCooldownTime = 25
+enemies = []
+bullets = []
+distance_2d = distance
+score = 00
+health = 100
+can_play = True
+
+# Bullet Class
+def Bullet():
+    bullet = Entity(scale=0.025, color=color.black, roundness=1, x=player.x, y=player.y, rotation=player.rotation)
+    bullets.append(bullet)
+    return bullet
+
+def bulletMovement():
+    for bullet in bullets:
+        angleInRadians = bullet.rotation * (Math.PI / 180)
+        velocity_x = Math.cos(angleInRadians) * bulletSpeed
+        velocity_y = Math.sin(angleInRadians) * bulletSpeed * -1
+        bullet.x += velocity_x
+        bullet.y += velocity_y
+        if bullet.x >= 0.9 or bullet.x <= -0.9 or bullet.y >= 0.5 or bullet.y <= -0.5:
+            destroy(bullet)
+            bullets.remove(bullet)
+
+def bulletAttack():
+    for enemie in enemies:
+        for bullet in bullets:
+            dist = distance_2d(bullet.position, enemie.position)
+            if dist <= 0.05:
+                destroy(enemie)
+                destroy(bullet)
+                bullets.remove(bullet)
+                enemies.remove(enemie)
+                score += 1
+
+# Enemie Class
+def Enemie():
+    enemie = Entity(scale=0.075, texture='shooter-assets/enemie.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000))
+    enemies.append(enemie)
+    return enemie
+
+# Enemie Movement
+def enemieMovement():
+    for enemie in enemies:
+        enemie.look_at(player.position)
+        angleInRadians = enemie.rotation * (Math.PI / 180)
+        velocity_x = Math.cos(angleInRadians) * enemieSpeed
+        velocity_y = Math.sin(angleInRadians) * enemieSpeed * -1
+        enemie.x += velocity_x
+        enemie.y += velocity_y
+
+# Enemie Attack
+def enemieAttack():
+    for enemie in enemies:
+        dist = distance_2d(player.position, enemie.position)
+        if dist <= 0.05:
+            destroy(enemie)
+            enemies.remove(enemie)
+            health -= 10
+
+# Player Movement
+def playerMovement():
+    player.look_at(mouse.position)
+    if held_keys['w']:
+        player.y += playerSpeed
+    if held_keys['a']:
+        player.x -= playerSpeed
+    if held_keys['s']:
+        player.y -= playerSpeed
+    if held_keys['d']:
+        player.x += playerSpeed
+
+    if player.x >= 0.86:
+        player.x = 0.85
+    if player.x <= -0.86:
+        player.x = -0.85
+    if player.y >= 0.457:
+        player.y = 0.458
+    if player.y <= -0.457:
+        player.y = -0.458
+
+# Move Crosshair to Mouse
+def crossToMouse():
+    crosshair.position = mouse.position
+
+
+# Player Upgrades
+def playerUpgrades():
+    if score >= 25:
+        shootCooldownTime = 25
+        enemieCooldownTime = 20
+    if score >= 50:
+        shootCooldownTime = 20
+        enemieCooldownTime = 15
+    if score >= 75:
+        shootCooldownTime = 15
+        enemieCooldownTime = 10
+
+# Update Function
+def update():
+    if can_play:
+        shootCooldown += 1
+        enemieCooldown += 1
+        score_text.text = `Score: ${score}`
+        health_text.text = `Health: ${health}`
+        crossToMouse()
+        playerMovement()
+        enemieMovement()
+        bulletMovement()
+        bulletAttack()
+        enemieAttack()
+        playerUpgrades()
+        if health <= 0:
+            gameOver_text.y = 0
+            can_play = False
+        if enemieCooldown >= enemieCooldownTime:
+            enemie = Enemie()
+            enemieCooldown = 0
+        if mouse.left:
+            if shootCooldown >= shootCooldownTime:
+                bullet = Bullet()
+                shootCooldown = 0
+        
+        
+# Input Function
+def input(key):
+    if key == 'p':
+        if can_play:
+            can_play = False
+        elif not can_play:
+            can_play = True
+    if can_play:
+        if key == 'g':
+            enemie = Enemie()
+
+
+
+player = Entity(scale=0.075,roundness=1, texture='shooter-assets/player.png')
+crosshair = Entity(scale=(0.0525),texture='shooter-assets/crosshair.png')
+
+score_text = Text(text='Score: 00', text_origin=[0,0], scale=0.75, y=.43, text_size=6, text_color=color.white)
+health_text = Text(text='Health: 100', text_origin=[0,0], scale=0.75, y=-.45, text_size=5, text_color=color.white, x=-.74)
+
+gameOver_text = Text(text='Game Over!', text_origin=[0,0], scale=0.75, text_size=8, text_color=color.white, y=-1)
+
+
+
+
+
+</script>
+<script src="taptapir/sunsnake_compiler.js"></script>
+</body>
+</html>    
