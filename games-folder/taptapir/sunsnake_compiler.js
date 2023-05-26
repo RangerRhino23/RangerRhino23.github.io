@@ -1,13 +1,22 @@
 print = console.log
+_class_names = ['Entity', 'Button', 'Text', 'HealthBar', 'RainbowSlider', 'InputField']
+_language = 'sunsnake'
+
+Array.prototype.at = function(i) {
+    if (i < 0) {
+        i = this.length + i
+    }
+    return this[i]
+}
 
 function compile(script) {
-    t = performance.now()
+    try {t = performance.now()} catch {}
     // start parsing
     script = script.replaceAll(',\n', ',')
     script = script.replaceAll('(\n', '(')
     script = script.replaceAll('{\n', '{')
     script = script.replaceAll('[\n', '[')
-
+    script = script.replaceAll(' == ', ' === ')
     script = script.replaceAll('.index(', '.indexOf(')
 
     var all_lines = script.split('\n');
@@ -17,6 +26,8 @@ function compile(script) {
     strings = []
     string_index = 0
     const regexp = '\'(.*?)\'';
+    const regexp_backtick = '\`(.*?)\`';
+
     extra_replacements = []
     is_in_merge_lines_mode = false;
 
@@ -25,18 +36,28 @@ function compile(script) {
             // print('skip line')
             continue
         }
-        if (all_lines[i].trimStart().startsWith('//')) {
+        line = all_lines[i].trimStart()
+        if (line.startsWith('//')) {
             continue
         }
-        if (all_lines[i].trimStart().startsWith('#')) {
+        if (line.startsWith('#')) {
             continue
         }
         if (all_lines[i].includes(': #')) {
             all_lines[i] = all_lines[i].split(': #')[0] + ':'
         }
-        // if (all_lines[i].trimStart().startsWith('define(')) {}
+        if (line == `'language=python'`) {
+            _language = 'python'
+        }
+        else if (line == `'language=sunsnake'`) {
+            _language = 'sunsnake'
+        }
+        if (_language == 'python') {
+            continue
+        }
         // remove text so it doesn't get parsed as code.
         quotes = [...all_lines[i].matchAll(regexp)];
+        quotes.push(...all_lines[i].matchAll(regexp_backtick))
 
         for (var j=0; j<quotes.length; j++) {
             if (quotes[j][1].length > 0) {
@@ -48,21 +69,21 @@ function compile(script) {
         }
 
         // after keyword for easier invoke()
-        if (all_lines[i].trimStart().startsWith('after ') && all_lines[i].trimEnd().endsWith(':')) {
+        if (line.startsWith('after ') && all_lines[i].trimEnd().endsWith(':')) {
             start_indent = get_indent(all_lines[i])
             all_lines[i] = all_lines[i].replaceAll('after ', 'after(')
             all_lines[i] = all_lines[i].slice(0,-1) + ', function()'
             for (var j=i+1; j<all_lines.length; j++) {
                 if (get_indent(all_lines[j]) <= start_indent) {
-                    // if (lines[j-1].endsWith('}')) {
-                    // all_lines[j] = all_lines[j] + '})'
-                    // }
-                    // else {
-                    // lines[j] = lines[j] + ')'
-                    // }
                     break
                 }
             }
+        }
+
+        if (all_lines[i].startsWith('class ')) {
+          class_name = all_lines[i].slice(6).split(' ')[0]
+          print('found class:', class_name)
+            _class_names.push(class_name)
         }
 
         lines.push(all_lines[i])
@@ -93,9 +114,8 @@ function compile(script) {
         lines[i] = lines[i].replaceAll('[-1]', '.at(-1)')
         lines[i] = lines[i].replaceAll(' # ', ' //')   // comments
 
-
         // list comprehention
-        if (lines[i].includes('[') && lines[i].includes(']') && lines[i].includes(' for ') && lines[i].includes(' in ') && !lines[i].endsWith(':')) {
+        if (lines[i].includes('[') && lines[i].includes(']') && lines[i].includes(' for ') && lines[i].includes(' in ') && !lines[i].endsWith(':') && !lines[i].includes('[[')) {
             // remove part before list comprehension
             if (lines[i].includes(' = [')) {
                 code_before_list_comprehension = lines[i].split(' = [')[0] + ' = '
@@ -197,7 +217,7 @@ function compile(script) {
             lines[i] = lines[i].replace(`${word_before_in} in ${word_after_in}`, `${word_after_in}.includes(${word_before_in})`)
         }
 
-        for (var class_name of ['Button', 'Text', 'dict']) {
+        for (var class_name of ['dict', ]) {
             if (lines[i].includes(`${class_name}({`)) {
                 continue
             }
@@ -206,13 +226,11 @@ function compile(script) {
             }
         }
 
-        for (var class_name of ['Entity', 'HealthBar', 'RainbowSlider']) {
-            if (lines[i].includes(`${class_name}({`)) {
-                continue
-            }
-            if (lines[i].includes(`${class_name}(`)) {
+        for (var class_name of _class_names) {
+            is_first_word = lines[i].startsWith(`${class_name}(`) ? '' : ' '        // don't add space if line starts with 'Entity(', do add otherwise, to ensure we match the whole name
+            if (lines[i].includes(`${is_first_word}${class_name}(`)) {
+                lines[i] = lines[i].replace(`${is_first_word}${class_name}(`, `${is_first_word}new ${class_name}(`)
                 lines[i] = convert_arguments(lines[i], class_name)
-                lines[i] = lines[i].replace(`${class_name}(`, `new ${class_name}(`)
             }
         }
 
@@ -221,14 +239,12 @@ function compile(script) {
             lines[i] = lines[i].replaceAll(`${n}s`, `${n}`)
             lines[i] = lines[i].replaceAll(`${n}m`, `${n}*60`)
             lines[i] = lines[i].replaceAll(`${n}h`, `${n}*60*60`)
-
             lines[i] = lines[i].replaceAll(` in ${n}:`, ` in range(${n}):`)
         }
     }
-
     // add brackets based on indentation
     current_indent = 0
-    is_in_after_block = false
+    after_statement_indents = []
 
     for (var i=0; i<lines.length; i++) {
         if (i > 0) {
@@ -239,34 +255,28 @@ function compile(script) {
                 lines[i-1] += ' {'
                 current_indent = current_line_indent
             }
-
             if (current_line_indent < prev_line_indent) {
                 for (var j of range(current_indent - current_line_indent)) {
                     lines[i-1] += '\n' + '    '.repeat(current_indent-j-1) + '}'
-                    if (is_in_after_block) {
+
+                    if (after_statement_indents.at(-1) === current_indent-j-1) {
                         lines[i-1] += ')'
-                        is_in_after_block = false
+                        after_statement_indents.pop()
                     }
                 }
                 current_indent = current_line_indent
             }
-
             if (lines[i].trimStart().startsWith('after(')) {
-                is_in_after_block = true;
+                after_statement_indents.push(current_indent)
             }
         }
     }
+
     new_line = ''
     for (var j of range(current_indent)) {
         new_line += '' + '    '.repeat(current_indent-1) + '}'
-        if (is_in_after_block) {
-            new_line += ')'
-            is_in_after_block = false
-        }
     }
     lines.push(new_line)
-
-
     var compiled_code = lines.join('\n')
 
     // add text back in
@@ -274,8 +284,8 @@ function compile(script) {
         compiled_code = compiled_code.replace(`[TEXT_CONTENT_${i}]`, `'${strings[i]}'`)
     }
 
-    // print('COMPILED CODE:', compiled_code)
-    print('compiled in', performance.now() - t, 'ms')
+    print('COMPILED CODE:', compiled_code)
+    try {print('compiled in', performance.now() - t, 'ms')} catch {}
     return compiled_code
 }
 
@@ -284,26 +294,22 @@ function get_indent(str) {
         return 0
     }
     return (str.length - str.trimStart().length) / 4
-
 }
 
 function get_inside_brackets(str, open_bracket, closing_bracket) {
     text_inside_bracket = ''
     counter = 1
-
     for (const char of str) {
         if (char == open_bracket)
             counter += 1
 
         if (char == closing_bracket)
             counter -= 1
-
             if (counter == 0)
                 return text_inside_bracket
 
         text_inside_bracket += char
     }
-
 }
 function convert_arguments(line, class_name) {
     part_after = line.split(class_name+'(')[1]
@@ -322,24 +328,14 @@ function convert_arguments(line, class_name) {
 
     keys = new_arguments.split(',').map(e => e.split('=')[0])
     if (!keys.includes('name')) {
-        if (line.includes(`= ${class_name}`)) {
-            variable_name = line.split(`= ${class_name}`)[0].trimStart()
+        if (line.includes(`= new ${class_name}`)) {
+            variable_name = line.split(`= new ${class_name}`)[0].trimStart()
             if (variable_name.startsWith('let ')) {
                 variable_name = variable_name.slice(4)
             }
             new_arguments = `name='${variable_name}', ${new_arguments}`
-            // print('variable_name:', variable_name)
-            // if line.includes(`= ${class_name}`) {
-                //
-                // }
-
         }
     }
-    // print('-cccccccccccccc-', keys)
-    // if ('name'  new_arguments) {
-    //
-    // }
-
     js_style_arguments = '{' + new_arguments.replaceAll('=', ':') + '}'
 
     if (has_inline_function) {
@@ -358,10 +354,10 @@ function sum(arr) {
 }
 
 String.prototype.count=function(c) {
-  var result = 0, i = 0;
-  for(i;i<this.length;i++)if(this[i]==c)result++;
-  return result;
-};
+    var result = 0, i = 0;
+    for(i;i<this.length;i++)if(this[i]==c)result++;
+    return result;
+}
 print = console.log
 False = false
 True = true
@@ -372,8 +368,10 @@ abs = Math.abs
 floor = Math.floor
 ceil = Math.ceil
 math = Math
-round = Math.round
 sqrt = Math.sqrt
+function round(value, digits=0) {
+    return Number(Math.round(value+'e'+digits)+'e-'+digits);
+}
 
 function enumerate(list) {
     if (typeof list === 'array') {
@@ -382,7 +380,6 @@ function enumerate(list) {
     if (typeof list === 'object') {
         return Object.entries(list)
     }
-
 }
 
 function str(value) {
@@ -395,12 +392,25 @@ function int(value) {
     return parseInt(value)
 }
 
-function Array_2d(w, h) {
+function Array_2d(w, h, default_value=0) {
     var tiles = new Array(w)
     for (var i = 0; i < tiles.length; i++) {
         tiles[i] = new Array(h);
+        tiles[i].fill(default_value)
     }
     return tiles
+}
+function Array_3d(w, h, d) {
+    var arr = new Array(w);
+
+    for (var i = 0; i < w; i++) {
+        arr[i] = new Array(h);
+
+        for (var j = 0; j < h; j++) {
+            arr[i][j] = new Array(d).fill(0);
+        }
+    }
+    return arr;
 }
 // function range(n) {return Array(n).keys()}
 function range(start, stop, step) {
@@ -441,6 +451,8 @@ Array.prototype.remove = function (element) {
 function dict(values={}) {
     return values
 }
+__name__ = null // for python compability
+__autocompile__ = true
 
 var scripts = document.getElementsByTagName("script")
 for (var script of scripts) {
@@ -450,8 +462,5 @@ for (var script of scripts) {
             compiled_code = compile(script.textContent)
             eval(compiled_code)
         }
-        // else if (script.href) {
-        //     print(script)
-        // }
     }
 }
