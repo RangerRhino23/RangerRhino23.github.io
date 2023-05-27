@@ -63,9 +63,9 @@ set_window_color('gray')
 ###################
 
 #Add enemy spawn limit - DONE
-#Add different enemies
-#Add increasing difficulty
-#Add power-ups (Health Packs, Shoot Speed Upgrades)
+#Add different enemies - DONE
+#Add increasing difficulty - DONE
+#Add power-ups (Health Packs, Shoot Speed Upgrades) - PARTLY DONE
 
 
 # Variables
@@ -131,9 +131,9 @@ def bulletAttack():
 # Enemie Class
 def Enemie():
     if random_int(0,4) == 1:
-        enemie = Entity(scale=0.075, texture='shooter-assets/enemieSpeed.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*10, health=10, score=1)
+        enemie = Entity(scale=0.075, texture='shooter-assets/enemieSpeed.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*8, health=10, score=1)
     elif random_int(0,10) == 1:
-        enemie = Entity(scale=0.075, texture='shooter-assets/enemieTank.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*0.75, health=50, score=4)
+        enemie = Entity(scale=0.075, texture='shooter-assets/enemieTank.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*0.85, health=50, score=4)
     else:
         enemie = Entity(scale=0.075, texture='shooter-assets/enemie.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed, health=10, score=2)
     dist = distance_2d(player.position, enemie.position)
@@ -167,7 +167,7 @@ def bossMovement():
         bossSpawnCooldown -= 1
         if bossSpawnCooldown <= 0:
             bossSpawnCooldown = 50
-            enemie = Entity(scale=0.055, texture='shooter-assets/enemieSpeed.png', roundness=1, x=boss.x+(random_int(-40,40)/100),y=boss.y+(random_int(-40,40)/100), speed=enemieSpeed*20, health=10, score=0)
+            enemie = Entity(scale=0.055, texture='shooter-assets/enemieSpeed.png', roundness=1, x=boss.x+(random_int(-40,40)/100),y=boss.y+(random_int(-40,40)/100), speed=enemieSpeed*12, health=10, score=0)
             enemies.append(enemie)
 
 
@@ -239,7 +239,7 @@ def HealthPack():
 def spawnHealthPack():
     healthCooldownTime -= 1
     if healthCooldownTime <= 1:
-        healthCooldownTime = random_int(1000,2000)
+        healthCooldownTime = random_int(8000,1400)
         healthPack = HealthPack()
     for healthPack in healthPacks:
         dist = distance_2d(player.position, healthPack.position)
@@ -303,9 +303,6 @@ def input(key):
                 can_play = False
             elif not can_play:
                 can_play = True
-        if can_play:
-            if key == 'g':
-                score += 50
 
 
 
