@@ -130,19 +130,25 @@ def bulletAttack():
 
 # Enemie Class
 def Enemie():
-    if random_int(0,4) == 1:
-        enemie = Entity(scale=0.075, texture='shooter-assets/enemieSpeed.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*8, health=10, score=1)
-    elif random_int(0,10) == 1:
-        enemie = Entity(scale=0.075, texture='shooter-assets/enemieTank.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*0.85, health=50, score=4)
-    else:
-        enemie = Entity(scale=0.075, texture='shooter-assets/enemie.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed, health=10, score=2)
-    dist = distance_2d(player.position, enemie.position)
-    if dist <= 0.45:
-        destroy(enemie)
-        Enemie()
-    else:
-        enemies.append(enemie)
-        return enemie
+    if len(enemies) <= 30:
+        if random_int(0,4) == 1:
+            enemie = Entity(scale=0.075, texture='shooter-assets/enemieSpeed.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*6, health=10, score=1, id="speed")
+        elif random_int(0,10) == 1:
+            enemie = Entity(scale=0.075, texture='shooter-assets/enemieTank.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*0.85, health=50, score=4, id="tank")
+        else:
+            enemie = Entity(scale=0.075, texture='shooter-assets/enemie.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed, health=10, score=2, id="normal")
+        dist = distance_2d(player.position, enemie.position)
+        if dist <= 0.45:
+            destroy(enemie)
+            Enemie()
+        else:
+            enemies.append(enemie)
+            return enemie
+    if len(enemies) >= 30:
+        for enemie in enemies:
+            if enemie.id == 'normal' and len(enemies) >= 30:
+                destroy(enemie)
+                enemies.remove(enemie)
 
 # Boss Class
 def Boss():
@@ -166,7 +172,7 @@ def bossMovement():
         boss.y += velocity_y
         bossSpawnCooldown -= 1
         if bossSpawnCooldown <= 0:
-            bossSpawnCooldown = 50
+            bossSpawnCooldown = 75
             enemie = Entity(scale=0.055, texture='shooter-assets/enemieSpeed.png', roundness=1, x=boss.x+(random_int(-40,40)/100),y=boss.y+(random_int(-40,40)/100), speed=enemieSpeed*12, health=10, score=0)
             enemies.append(enemie)
 
@@ -286,7 +292,7 @@ def update():
             if health <= 0:
                 gameOver_text.y = 0
                 can_play = False
-            if enemieCooldown <= 0 and len(enemies) <= 30:
+            if enemieCooldown <= 0:
                 enemie = Enemie()
                 enemieCooldown = enemieCooldownTime
             if mouse.left:
