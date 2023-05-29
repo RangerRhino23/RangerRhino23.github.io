@@ -41,6 +41,7 @@ distance_2d = distance
 score = 00
 health = 100
 can_play = True
+can_pause = True
 start = False
 
 # Bullet Class
@@ -111,7 +112,7 @@ def Boss():
     dist = distance_2d(player.position, boss.position)
     if dist <= 0.45:
         destroy(boss)
-        Enemie()
+        Boss()
     else:
         bosses.append(boss)
         return boss
@@ -138,12 +139,11 @@ def bossAttack():
     for boss in bosses:
         dist = distance_2d(player.position, boss.position)
         if dist <= 0.09:
-            boss.look_at(player.position)
-            angleInRadians = boss.rotation * (Math.PI / 180)
-            velocity_x = Math.cos(angleInRadians) * boss.speed
-            velocity_y = Math.sin(angleInRadians) * boss.speed * -1
-            boss.x += velocity_x + 0.2
-            boss.y += velocity_y + 0.2
+            angleInRadians = player.rotation * (Math.PI / 180)
+            velocity_x = Math.cos(angleInRadians) * player.speed
+            velocity_y = Math.sin(angleInRadians) * player.speed * -1
+            player.x += (velocity_x*-35)
+            player.y += (velocity_y*-35)
             health -= 20
 
 # Enemie Movement
@@ -169,13 +169,13 @@ def enemieAttack():
 def playerMovement():
     player.look_at(mouse.position)
     if held_keys['w']:
-        player.y += playerSpeed
+        player.y += player.speed
     if held_keys['a']:
-        player.x -= playerSpeed
+        player.x -= player.speed
     if held_keys['s']:
-        player.y -= playerSpeed
+        player.y -= player.speed
     if held_keys['d']:
-        player.x += playerSpeed
+        player.x += player.speed
 
     if player.x >= 0.86:
         player.x = 0.85
@@ -248,8 +248,13 @@ def update():
                 gameOver_text.y = 0
                 can_play = False
             if enemieCooldown <= 0:
-                enemie = Enemie()
-                enemieCooldown = enemieCooldownTime
+                if len(bosses) > 0:
+                    if random_int(0,40) == 1:
+                    enemie = Enemie()
+                    enemiecooldown = enemieCooldownTime
+                else:
+                    enemie = Enemie()
+                    enemieCooldown = enemieCooldownTime
             if mouse.left:
                 if shootCooldown <= 0 and len(bullets) <= 50:
                     bullet = Bullet()
@@ -261,13 +266,17 @@ def input(key):
     if start:
         if key == 'p':
             if can_play:
-                can_play = False
+                if can_pause:
+                    can_play = False
+                    can_pause = False
+                    after 5:
+                        can_pause = True
             elif not can_play:
                 can_play = True
 
 
 
-player = Entity(scale=0.075,roundness=1, texture='shooter-assets/player.png')
+player = Entity(scale=0.075,roundness=1, texture='shooter-assets/player.png', speed=playerSpeed)
 crosshair = Entity(scale=(0.0525),texture='shooter-assets/crosshair.png')
 
 score_text = Text(text='Score: 0', text_origin=[0,0], scale=0.75, y=.43, text_size=6, text_color=color.white)
