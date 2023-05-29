@@ -211,13 +211,13 @@ def spawnHealthPack():
 
 # Difficulty Increaser
 reqScore = 10
-bossScore = 300
+bossSpawnScore = 300
 def increaseDifficulty():
     if score >= reqScore and shootCooldownTime >= 20:
         reqScore += 40
         shootCooldownTime -= 2
-    if score >= bossScore:
-        bossScore += 300
+    if score >= bossSpawnScore:
+        bossSpawnScore += 400
         bossIncoming_text.y = 0
         after 3:
             bossIncoming_text.y = -1
