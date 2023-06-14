@@ -19,31 +19,11 @@
 <header>
   <div id="side-menu">
 		<div class="menu-item"><a href="">Home</a></div>
-    <div class="menu-item"><a id="aboutMyselfButton">About Myself</a></div>
-    <div class="menu-item"><a id="programmingLifeButton">Programming Life</a></div>
+    <div class="menu-item" id="aboutMyselfButton"><a>About Myself</a></div>
+    <div class="menu-item" id="programmingLifeButton"><a>Programming Life</a></div>
     <div class="menu-item"><a href="">Contact Me</a></div>
     <div class="menu-item"><a href="">Portfolio</a></div>
     <div class="menu-item"><a href="">Games</a></div>
-    <script>
-      var aboutMyselfToggle = document.getElementById("aboutMyselfButton");
-      var sideMenu = document.getElementById("side-menu");
-      
-      AboutPyblogToggle.addEventListener("click", function() {
-      sideMenu.classList.toggle("deactive");
-      window.location.href = '#about-myself';
-      document.body.classList.toggle('overflow-hidden');
-      });
-    </script>
-    <script>
-      var programmingLifeToggle = document.getElementById("programmingLifeButton");
-      var sideMenu = document.getElementById("side-menu");
-      
-      AboutPyblogToggle.addEventListener("click", function() {
-      sideMenu.classList.toggle("deactive");
-      window.location.href = '#programming-life';
-      document.body.classList.toggle('overflow-hidden');
-      });
-    </script>
 	</div>
 	<div id="menu-toggle" style="font-size: x-large">&#9776;</div>
   <a href=""><img style="float: center; margin-right: 16px; margin-top: 12px;width:180px;height:40px; border-radius:10px;object-fit: cover" src="icon.png" alt="Logo"></a>
@@ -54,6 +34,26 @@
 		menuToggle.addEventListener("click", function() {
 			sideMenu.classList.toggle("active");
       document.body.classList.toggle('overflow-hidden');
+		});
+	</script>
+  <script>
+		var aboutMyselfToggle = document.getElementById("aboutMyselfButton");
+    var sideMenu = document.getElementById("side-menu");
+		
+		aboutMyselfToggle.addEventListener("click", function() {
+      sideMenu.classList.toggle("active");
+      window.location.href="#about-myself";
+      document.body.classList.toggle('overflow-hidden')
+		});
+	</script>
+  <script>
+		var programmingLifeToggle = document.getElementById("programmingLifeButton");
+    var sideMenu = document.getElementById("side-menu");
+		
+		programmingLifeToggle.addEventListener("click", function() {
+      sideMenu.classList.toggle("active");
+      window.location.href="#programming-life";
+      document.body.classList.toggle('overflow-hidden')
 		});
 	</script>
   </header>
