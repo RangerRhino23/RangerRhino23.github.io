@@ -1,0 +1,84 @@
+:root {
+    --mainColor: #2596be; /* color: var(--mainColor) */
+    --secondColor: #145369;
+    --thirdColor: #041014;
+    --textColor: whitesmoke;
+  }
+  
+body {
+    background-color: var(--thirdColor);
+    background-image: linear-gradient(var(--mainColor) -10%, var(--secondColor) 150px, black 140%);
+    color: var(--textColor);
+    font-family: 'Verdana', sans-serif;
+    text-align: center;
+}
+
+h1 {
+    color: var(--textColor);
+    font-size: 90px;
+    font-weight: lighter;
+    font-family: 'Verdana', sans-serif;
+}
+
+/* Search Bar */
+.search-bar {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    float: center;
+    margin-top: -30px;
+}
+  
+.search-bar input[type="text"] {
+    margin-left: 5px;
+    padding: 20px;
+    padding-left: 13px;
+    padding-right: 35%;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    font-size: 16px;
+}
+
+/* Button Grid */
+.button-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+    width: 60%;
+    margin: 0 auto;
+}
+  
+.button-container button {
+    background-color: #333;
+    font-size: 20px;
+    color: white;
+    padding: 10%;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+  
+.button-container button:hover {
+    background-color: #222;
+    transform: scale(1.2);
+    transition: transform 0.5s ease-in-out;
+}
+
+.button-container button img {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.button-container button p {
+    color: gray;
+    font-size: 14px;
+    margin-left: 60px;
+    margin-top: -10px;
+}
