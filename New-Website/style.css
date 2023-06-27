@@ -91,8 +91,8 @@ p {
 /* Header Menu */
 .menu {
   display: flex;
-  align-items: center; /* Vertically center the items */
-  justify-content: flex-end; /* Align items to the right */
+  align-items: center;
+  justify-content: flex-end;
   list-style-type: none;
   margin: 0;
   height: 50px;
@@ -102,7 +102,7 @@ p {
 }
 
 .menu li {
-  display: inline-block; /* Display li elements horizontally */
+  display: inline-block;
 }
 
 .menu li a {
@@ -131,4 +131,67 @@ p {
 
 .menu li a:hover {
   background-color: rgb(52, 52, 52);
+}
+
+.social-button {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.social-button a {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+  margin: 10px;
+  font-size: 18px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px #9b9b9b;
+}
+
+.social-button a img {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.social-button a:hover {
+  transform: scale(1.2);
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Button Grid */
+.button-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.button-container button {
+  background-color: #333;
+  font-size: 20px;
+  color: white;
+  padding: 10%;
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.button-container button:hover {
+  background-color: #222;
+  transform: scale(1.2);
+  transition: transform 0.5s ease-in-out;
+}
+
+.button-container button p {
+  color: gray;
+  font-size: 14px;
+  margin-left: 60px;
+  margin-top: -10px;
 }

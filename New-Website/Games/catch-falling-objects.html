@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Catch The Objects! | RangerRhino23</title>
+  </head>
+    <script src="taptapir/taptapir.js"></script>
+    <script type="text/sunsnake">
+
+#Global Functions
+set_orientation('vertical')
+set_window_color('rgb(23,23,23)')
+set_scale(0.87)
+
+#Variables
+speed = 0.0075
+fallingSpeed = 0.0295
+score = 0
+lives = 3
+
+def update():
+    score_text.text = `Score: ${score}`
+    lives_text.text = `Lives: ${lives}`
+    #Failed
+    if lives >= 1:
+        #Catcher Movement
+        catcher.x = mouse.x
+
+        #FallingObject Movement
+        fallingObject.y -= fallingSpeed
+        if fallingObject.y<= -.95:
+            lives -= 1
+            fallingObject.y=.92
+            x_coord = random_int(-400,400)
+            x_coord = x_coord/1000
+            fallingObject.x=x_coord
+        if fallingObject.x<=catcher.x+0.15 and fallingObject.x>=catcher.x-0.15:
+            if fallingObject.y<=catcher.y+0.0335:
+                score += 1
+                fallingSpeed += 0.0007
+                fallingObject.y=.92
+                x_coord = random_int(-400,400)
+                x_coord = x_coord/1000
+                fallingObject.x=x_coord
+    if lives <= 0:
+        gameOver_text.y = 0
+    
+
+catcher = Entity(color=color.gray, scale=[0.15,0.025], y=-.7)
+
+score_text = Text(text='Score: 00', text_origin=[0,0], scale=0.75, y=.83, text_size=6, text_color=color.white)
+lives_text = Text(text='Lives: 03', text_origin=[0,0], scale=0.75, y=-.85, text_size=3, text_color=color.white, x=-.38)
+
+
+fallingObject = Entity(x=0,y=.92,color=color, scale=0.05)
+gameOver_text = Text(text='Game Over!', text_origin=[0,0], scale=0.75, text_size=8, text_color=color.white, y=-1)
+
+    </script><script src="taptapir/sunsnake_compiler.js"></script></html>
