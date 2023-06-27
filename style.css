@@ -1,13 +1,19 @@
+:root {
+  --mainColor: #1e81b0; /* color: var(--mainColor) */
+  --secondColor: #063970;
+  --complimentaryColor: #eeeee4;
+}
+
 body {
-  background-color: tan;
-  background-image: linear-gradient(tan 0%, black 6%);
+  background-color: var(--mainColor);
+  background-image: linear-gradient(white -10%, var(--mainColor) 150px, var(--secondColor) 90%);
   color: white;
   font-family: 'Verdana', sans-serif;
   text-align: center;
 }
 
 h1 {
-  color: rgb(119, 102, 79);
+  color: whitesmoke;
   margin-top: 50px;
 }
 
@@ -17,6 +23,48 @@ h2 {
   font-size: 25px
 }
 
+.img-preset {
+  width: 250px;
+  height: 350px;
+  max-width: 50%;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+p {
+  color: whitesmoke;
+  max-width: 45%;
+  margin: auto;
+  font-size: larger;
+  font-weight: bold;
+}
+
+/* Button Hover Animation (Menu) */
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: var(--mainColor);
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 4px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--secondColor);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Custom Buttons */
 .button-container {
   display: flex;
   justify-content: center;
@@ -40,27 +88,110 @@ h2 {
   color: white;
 }
 
+/* Header Menu */
 .menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  height: 50px;
   overflow: hidden;
   background-color: #555;
   border-radius: 40px;
 }
 
 .menu li {
-  float: left;
+  display: inline-block;
 }
 
 .menu li a {
-  display: block;
+  display: inline-block;
   color: white;
+  font-size: larger;
   text-align: center;
-  padding: 14px 16px;
+  margin: 0px;
+  padding: 13px 16px;
   text-decoration: none;
 }
 
+.menu li img {
+  display: inline-block;
+  color: white;
+  font-size: larger;
+  text-align: center;
+  margin: 0px;
+  padding: 13px 16px;
+  text-decoration: none;
+  width:140px;
+  height:140px; 
+  border-radius:100px;
+  object-fit: fill;
+}
+
 .menu li a:hover {
-  background-color: #444;
+  background-color: rgb(52, 52, 52);
+}
+
+.social-button {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.social-button a {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+  margin: 10px;
+  font-size: 18px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px #9b9b9b;
+}
+
+.social-button a img {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.social-button a:hover {
+  transform: scale(1.2);
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Button Grid */
+.button-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.button-container button {
+  background-color: #333;
+  font-size: 20px;
+  color: white;
+  padding: 10%;
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.button-container button:hover {
+  background-color: #222;
+  transform: scale(1.2);
+  transition: transform 0.5s ease-in-out;
+}
+
+.button-container button p {
+  color: gray;
+  font-size: 14px;
+  margin-left: 60px;
+  margin-top: -10px;
 }
