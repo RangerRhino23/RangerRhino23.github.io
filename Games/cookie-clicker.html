@@ -32,7 +32,7 @@ passiveCost = 100
 cookies_text = Text(text='Cookies: 00', text_origin=[0,0], scale=0.75, y=.4, text_size=8, text_color=color.white)
 multiplierCost_text = Text(text='Multiplier Cost: 100', y=.075, x=.4, text_origin=[0,0], scale=0.75, text_size=2, text_color=color.white)
 passiveCost_text = Text(text='Multiplier Cost: 100', y=-.125, x=.4, text_origin=[0,0], scale=0.75, text_size=2, text_color=color.white)
-cookie = Entity(texture='../pictures/cookie-clicker/cookie.png', scale=.2, x=-.5)
+cookie = Entity(texture='cookie-clicker-assets/cookie.png', scale=.2, x=-.5)
 cookie_text = Text(text='Click Me!', x=-.5,y=.175, text_origin=[0,0], scale=0.75, text_size=6, text_color=color.white)
 logo_text = Text(text='Cookie Clicker By: RangerRhino23', x=-.53,y=.475, text_origin=[0,0], scale=0.75, text_size=4, text_color=color.white)
 cookie.on_click = def():
@@ -41,7 +41,7 @@ cookie.on_click = def():
     cookie.scale = .2
     cookie.animate('scale_x', .18, duration=.1)
     cookie.animate('scale_y', .18, duration=.1)
-cookieMaker = Entity(texture='../pictures/cookie-clicker/cookiemaker.png', scale=.2, x=.6,y=.1)
+cookieMaker = Entity(texture='cookie-clicker-assets/cookiemaker.png', scale=.2, x=.6,y=.1)
 cookieMaker.on_click = def():
     if score>=multiplierCost:
         score -= multiplierCost
@@ -50,7 +50,7 @@ cookieMaker.on_click = def():
         cookieMaker.scale = .2
         cookieMaker.animate('scale_x', .18, duration=.1)
         cookieMaker.animate('scale_y', .18, duration=.1)
-cookieMultiplyer = Entity(texture='../pictures/cookie-clicker/multiplier.png', scale=.2, x=.6, y=-.1)
+cookieMultiplyer = Entity(texture='cookie-clicker-assets/multiplier.png', scale=.2, x=.6, y=-.1)
 cookieMultiplyer.on_click = def():
     if score>=passiveCost:
         score -= passiveCost
