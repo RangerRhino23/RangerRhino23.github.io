@@ -168,7 +168,7 @@ p {
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr;
   grid-gap: 5px;
-  width: 60%;
+  width: 90%;
   margin: 0 auto;
 }
 
