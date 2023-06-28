@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>404 | RangerRhino23</title>
-    <link rel="icon" type="image/x-icon" href="icon.icon">
+    <link rel="icon" type="image/x-icon" href="icon.png">
     <style>
       body {
             background-color: #f2f2f2;
@@ -12,86 +12,95 @@
             color: #333;
             margin: 0;
             padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 50px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        a {
-            color: #333;
-            text-decoration: none;
-            border-bottom: 2px solid #333;
-            padding-bottom: 2px;
-        }
-        a:hover {
-            border-bottom-color: #666;
-        }
+      }
 
-        .menu {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          background-color: #555;
-          border-radius: 40px;
-        }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 50px;
+        text-align: center;
+      }
 
-        .menu li {
-          float: left;
-        }
+      h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
 
-        .menu li a {
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 14px 16px;
-          text-decoration: none;
-        }
+      p {
+        font-size: 24px;
+        margin-bottom: 30px;
+      }
 
-        .menu li a:hover {
-          background-color: #444;
-        }
-    </style>
-    <script>
-      const paths = {
-        '/Home': '/home',
-        '/Games': '/games',
-        '/Portfolio': '/portfolio',
-        '/Index': '/index',
-      };
-      
-      const currentPage = window.location.pathname.toLowerCase();
-      
-      if (paths.hasOwnProperty(currentPage)) {
-        const redirectPath = paths[currentPage];
-        window.location.replace(redirectPath);
+      a {
+        color: #333;
+        text-decoration: none;
+        border-bottom: 2px solid #333;
+        padding-bottom: 2px;
       }
       
-    </script>
+      a:hover {
+        border-bottom-color: #666;
+      }
+
+      /* Header Menu */
+      .menu {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        list-style-type: none;
+        margin: 0;
+        height: 50px;
+        overflow: hidden;
+        background-color: #555;
+        border-radius: 40px;
+      }
+
+      .menu li {
+        display: inline-block;
+      }
+
+      .menu li a {
+        display: inline-block;
+        color: white;
+        font-size: larger;
+        text-align: center;
+        margin: 0px;
+        padding: 13px 16px;
+        text-decoration: none;
+      }
+
+      .menu li img {
+        display: inline-block;
+        color: white;
+        font-size: larger;
+        text-align: center;
+        margin: 0px;
+        padding: 13px 16px;
+        text-decoration: none;
+        width:140px;
+        height:140px; 
+        border-radius:100px;
+        object-fit: fill;
+      }
+
+      .menu li a:hover {
+        background-color: rgb(52, 52, 52);
+      }
+    </style>
   </head>
 <header>
-  <ul class="menu">
-    <li><img style="margin-left: 6px; margin-right: 6px; margin-top: 5px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="icon.png"></li>
-    <li><a href="Home">Home</a></li>
-    <li><a href="Portfolio">Portfolio</a></li>
-    <li><a href="Games">Games</a></li>
+  <ul class="menu" style="margin: 5px 15px 0px 15px;">
+    <li><a href="https://RangerRhino23.ddns.net/Games/">Games</a></li>
+    <li><a href="https://RangerRhino23.ddns.net/Portfolio">Portfolio</a></li>
+    <li><a href="https://RangerRhino23.ddns.net/Home">Home</a></li>
+    <li><img style="margin: 6px 6px 0px 12px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="icon.png"></li>
 </ul>
 </header>
 <body>
     <div class="container">
         <h1>404 Page Not Found</h1>
         <p>The page you are looking for does not exist.</p>
-        <p>Please check the URL or go to the <a href=" Home">homepage</a>.</p>
+        <p>Please check the URL or go to the <a href="https://RangerRhino23.ddns.net/Home">homepage</a>.</p>
     </div>
 </body>
 </html>
