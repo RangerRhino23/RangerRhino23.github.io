@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Reason | RangerRhino23</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <meta property="og:title" content="RangerRhino23">
+    <meta property="og:description" content="Ranger's Personal website">
+    <meta property="og:image" content="https://Rangerrhino23.ddns.net/icon.png">
+    <script>
+      window.onload = function() {
+        document.getElementById("enter-hunt").addEventListener("click", function() {
+          window.location.href = "The-Hunt.html";
+        });
+      };
+    </script>
+  </head>
+  <header>
+    <ul class="menu">
+      <li><a href="Games" class="hover-underline-animation">Games</a></li>
+      <li><a href="Portfolio" class="hover-underline-animation">Portfolio</a></li>
+      <li><a href="Contact-Me" class="hover-underline-animation">Contact Me</a></li>
+      <li><a href="Home" class="hover-underline-animation">Home</a></li>
+      <li><img id="enter-hunt" style="margin-left: 6px; margin-right: 6px; margin-top: 5px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="icon.png" alt="Logo Goes here"></li>
+  </ul>
+  </header>
+  <body style="height:100vh;">
+    <br><br><br>
+    <h1>The Reason</h1>
+
+    <script src="Games/taptapir/taptapir.js"></script>
+    <script type="text/sunsnake">
+    set_scale(.6)
+    set_orientation('landscape')
+    set_window_color('#1e81b0')
+
+    theReason = new Audio("the-reason/the-reason.mp3")
+    understand = Button(scale=[.6,.2], text='Understand...',text_color=color.white,color=color.black,z=-9)
+    understand.on_click = def():
+        theReason.play()
+        destroy(understand)
+        Entity(scale=[1], texture="the-reason/the-reason.png")
+    
+    
+
+    </script><script src="Games/taptapir/sunsnake_compiler.js"></script></html>
+
+  </body>
+</html>

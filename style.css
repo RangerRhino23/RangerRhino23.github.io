@@ -94,7 +94,7 @@ p {
   align-items: center;
   justify-content: flex-end;
   list-style-type: none;
-  margin: 0;
+  margin: 5px 10px 0px 10px;
   height: 50px;
   overflow: hidden;
   background-color: #555;
