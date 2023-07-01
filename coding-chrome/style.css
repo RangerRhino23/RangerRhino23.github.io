@@ -45,7 +45,7 @@ h1 {
 .button-container {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 5px;
     width: 60%;
     margin: 0 auto;
