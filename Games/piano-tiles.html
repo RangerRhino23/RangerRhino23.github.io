@@ -1,0 +1,75 @@
+<html>
+    <title>Piano Tiles</title>
+
+<body>
+    <script src="taptapir/taptapir.js"></script>
+<script type="text/sunsnake">
+
+#Global Functions
+set_orientation('vertical')
+set_window_color('gray')
+set_background_color('black')
+row1 = -.4
+row2 = -.13
+row3 = .13
+row4 = .4
+tiles = []
+score = 0
+lives = 3
+tileSpeed = 0.02
+startTileCooldown = 50
+tileCooldown = startTileCooldown
+
+#Tile Class
+def Tile(row):
+    row = random_int(1,4)
+    if row == 1:
+        row = row1
+    elif row == 2:
+        row = row2
+    elif row == 3:
+        row = row3
+    elif row == 4:
+        row = row4
+    let tile = Button(scale=[0.265,0.4],x=row,y=1.5, color=color.black, roundness=0)
+    tile.on_click = def():
+        tiles.remove(tile)
+        destroy(tile)
+        score += 1
+    tiles.append(tile)
+
+
+def tileGen():
+    tileCooldown -= 1
+    print(tileCooldown)
+    if tileCooldown <= 1:
+        tileCooldown = 25
+        Tile()
+
+def update():
+    if lives >= 1:
+        tileGen()
+        #Text updates
+        score_text.text = `Score: ${score}`
+        lives_text.text = `Lives: ${lives}`
+        #Tile Movement
+        for tile in tiles:
+            if tile.y >= -1.2:
+                tile.y -= tileSpeed
+            if tile.y <= -1.2:
+                tiles.remove(tile)
+                destroy(tile)
+                lives -= 1
+    if lives <= 0:
+        gameOver_text.y = 0
+
+                
+
+score_text = Text(text='Score: 00', text_origin=[0,0], scale=0.75, y=.83, text_size=6, text_color=color.white)
+lives_text = Text(text='Lives: 03', text_origin=[0,0], scale=0.75, y=-.85, text_size=3, text_color=color.white, x=-.38)
+
+gameOver_text = Text(text='Game Over!', text_origin=[0,0], scale=0.75, text_size=8, text_color=color.white, y=-1)
+</script>
+<script src="taptapir/sunsnake_compiler.js"></script>
+</body>
+</html>
