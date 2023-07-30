@@ -33,15 +33,15 @@ def Tile(row):
         row = row4
     let tile = Button(scale=[0.265,0.4],x=row,y=1.5, color=color.black, roundness=0)
     tile.on_click = def():
-        tiles.remove(tile)
-        destroy(tile)
-        score += 1
+        if lives >= 1:
+            tiles.remove(tile)
+            destroy(tile)
+            score += 1
     tiles.append(tile)
 
 
 def tileGen():
     tileCooldown -= 1
-    print(tileCooldown)
     if tileCooldown <= 1:
         tileCooldown = 25
         Tile()
