@@ -45,7 +45,6 @@ def tileGen():
     if tileCooldown <= 1:
         tileCooldown = 25
         Tile()
-
 def update():
     if lives >= 1:
         tileGen()
@@ -62,13 +61,23 @@ def update():
                 lives -= 1
     if lives <= 0:
         gameOver_text.y = 0
+        playagain_btn.y = -.3
 
                 
 
 score_text = Text(text='Score: 00', text_origin=[0,0], scale=0.75, y=.83, text_size=6, text_color=color.white)
 lives_text = Text(text='Lives: 03', text_origin=[0,0], scale=0.75, y=-.85, text_size=3, text_color=color.white, x=-.38)
 
-gameOver_text = Text(text='Game Over!', text_origin=[0,0], scale=0.75, text_size=8, text_color=color.white, y=-1)
+gameOver_text = Text(text='Game Over!', text_origin=[0,0], scale=0.75, text_size=8, text_color=color.white, y=-1,z=-1)
+playagain_btn = Button(text='Play Again', scale=[0.35,0.15], y=-1, z=-1)
+playagain_btn.on_click = def():
+    for tile in tiles:
+        destroy(tile)
+    tiles = []
+    score = 0
+    lives = 3
+    gameOver_text.y = -1
+    playagain_btn.y = -1
 </script>
 <script src="taptapir/sunsnake_compiler.js"></script>
 </body>
