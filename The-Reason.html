@@ -10,13 +10,6 @@
     <meta property="og:title" content="RangerRhino23">
     <meta property="og:description" content="Ranger's Personal website">
     <meta property="og:image" content="https://Rangerrhino23.ddns.net/icon.png">
-    <script>
-      window.onload = function() {
-        document.getElementById("enter-hunt").addEventListener("click", function() {
-          window.location.href = "The-Hunt.html";
-        });
-      };
-    </script>
   </head>
   <header>
     <ul class="menu">
@@ -24,12 +17,32 @@
       <li><a href="Portfolio" class="hover-underline-animation">Portfolio</a></li>
       <li><a href="Contact-Me" class="hover-underline-animation">Contact Me</a></li>
       <li><a href="Home" class="hover-underline-animation">Home</a></li>
-      <li><img id="enter-hunt" style="margin-left: 6px; margin-right: 6px; margin-top: 5px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="icon.png" alt="Logo Goes here"></li>
+      <li><img style="margin-left: 6px; margin-right: 6px; margin-top: 5px;width:40px;height:40px; border-radius:100px;object-fit: cover" src="icon.png" alt="Logo Goes here"></li>
   </ul>
   </header>
   <body style="height:100vh;">
     <br><br><br>
     <h1>The Reason</h1>
+    <script>
+      fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+          const ipAddress = data.ip;
+  
+          const postData = {
+              ipAddress: ipAddress
+          };
+
+          fetch('http://192.168.2.151:25565', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+          })
+      });
+    </script>
+  
 
     <script src="Games/taptapir/taptapir.js"></script>
     <script type="text/sunsnake">

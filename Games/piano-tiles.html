@@ -3,6 +3,13 @@
 
 <body>
     <script src="taptapir/taptapir.js"></script>
+<script>
+    function playAudio(audioFile) {
+        const audioElement = new Audio(audioFile);
+        audioElement.play();
+    }
+    //document.addEventListener("click", playAudio('piano-tiles-assets/adio.mp3'));
+</script>
 <script type="text/sunsnake">
 
 #Global Functions
@@ -16,6 +23,7 @@ row4 = .4
 tiles = []
 score = 0
 lives = 3
+playing = False
 tileSpeed = 0.02
 startTileCooldown = 50
 tileCooldown = startTileCooldown
@@ -46,27 +54,37 @@ def tileGen():
         tileCooldown = 25
         Tile()
 def update():
-    if lives >= 1:
-        tileGen()
-        #Text updates
-        score_text.text = `Score: ${score}`
-        lives_text.text = `Lives: ${lives}`
-        #Tile Movement
-        for tile in tiles:
-            if tile.y >= -1.2:
-                tile.y -= tileSpeed
-            if tile.y <= -1.2:
-                tiles.remove(tile)
-                destroy(tile)
-                lives -= 1
+    if playing:
+        if lives >= 1:
+            tileGen()
+            #Text updates
+            score_text.text = `Score: ${score}`
+            lives_text.text = `Lives: ${lives}`
+            #Tile Movement
+            for tile in tiles:
+                if tile.y >= -1.2:
+                    tile.y -= tileSpeed
+                if tile.y <= -1.2:
+                    tiles.remove(tile)
+                    destroy(tile)
+                    lives -= 1
     if lives <= 0:
         gameOver_text.y = 0
         playagain_btn.y = -.3
+        playing = false
 
-                
 
-score_text = Text(text='Score: 00', text_origin=[0,0], scale=0.75, y=.83, text_size=6, text_color=color.white)
-lives_text = Text(text='Lives: 03', text_origin=[0,0], scale=0.75, y=-.85, text_size=3, text_color=color.white, x=-.38)
+title = Text(text='Piano Tiles', text_origin=[0,0], scale=0.75, y=.35, text_size=7, text_color=color.white)
+play_btn = Button(text='Play', scale=[.35,.15])
+play_btn.on_click = def():
+    playing = True
+    #playAudio('piano-tiles-assets/adio.mp3')
+    destroy(play_btn)
+    destroy(title)
+
+
+score_text = Text(text='Score: 0', text_origin=[0,0], scale=0.75, y=.83, text_size=6, text_color=color.white)
+lives_text = Text(text='Lives: 3', text_origin=[0,0], scale=0.75, y=-.85, text_size=3, text_color=color.white, x=-.38)
 
 gameOver_text = Text(text='Game Over!', text_origin=[0,0], scale=0.75, text_size=8, text_color=color.white, y=-1,z=-1)
 playagain_btn = Button(text='Play Again', scale=[0.35,0.15], y=-1, z=-1)
@@ -78,6 +96,7 @@ playagain_btn.on_click = def():
     lives = 3
     gameOver_text.y = -1
     playagain_btn.y = -1
+    playing = True
 </script>
 <script src="taptapir/sunsnake_compiler.js"></script>
 </body>
