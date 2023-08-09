@@ -23,25 +23,6 @@
   <body style="height:100vh;">
     <br><br><br>
     <h1>The Reason</h1>
-    <script>
-      fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
-      .then(data => {
-          const ipAddress = data.ip;
-  
-          const postData = {
-              ipAddress: ipAddress
-          };
-
-          fetch('http://96.40.19.152:25565', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(postData),
-          })
-      });
-    </script>
   
 
     <script src="Games/taptapir/taptapir.js"></script>
