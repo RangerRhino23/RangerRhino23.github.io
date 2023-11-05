@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drawing Board | RangerRhino23</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            background-color: white;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        #controls button, #controls p {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="increaseWidth">+</button> |
+        <button id="decreaseWidth">-</button> |
+        <p id="lineWidth">5</p> |
+        <button id="eraserToggle">Pen</button> |
+        <input type="color" id="colorPicker"> |
+        <button id="clearCanvas">Clear Canvas</button>
+    </div>
+    <canvas id="drawingCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('drawingCanvas');
+        const context = canvas.getContext('2d');
+        const increaseWidthButton = document.getElementById('increaseWidth');
+        const decreaseWidthButton = document.getElementById('decreaseWidth');
+        const eraserToggleButton = document.getElementById('eraserToggle');
+        const colorPicker = document.getElementById('colorPicker');
+        const clearCanvasButton = document.getElementById('clearCanvas');
+        const lineWidthP = document.getElementById('lineWidth');
+
+        // Set the canvas size to match the window size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let isDrawing = false;
+        let isErasing = false;
+        let lineWidth = 5;
+        let currentColor = 'black';
+
+        // Function to update the line width and display it
+        function updateLineWidth() {
+            context.lineWidth = lineWidth;
+            lineWidthP.innerText = lineWidth;
+        }
+
+        // Function to update the pen color
+        function updatePenColor() {
+            currentColor = colorPicker.value;
+        }
+
+        // Initial line width setup
+        updateLineWidth();
+        updatePenColor();
+
+        // Event listener for mouse down
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            if (isErasing) {
+                context.clearRect(e.clientX - lineWidth / 2, e.clientY - lineWidth / 2, lineWidth, lineWidth);
+            } else {
+                context.beginPath();
+                context.moveTo(e.clientX, e.clientY);
+            }
+        });
+
+        // Event listener for mouse move
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+            if (!isErasing) {
+                context.strokeStyle = currentColor;
+                context.lineTo(e.clientX, e.clientY);
+                context.stroke();
+            } else {
+                context.clearRect(e.clientX - (lineWidth + 10) / 2, e.clientY - (lineWidth + 10) / 2, (lineWidth + 10), (lineWidth + 10));
+            }
+        });
+
+        // Event listener for mouse up
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            if (!isErasing) {
+                context.closePath();
+            }
+        });
+
+        // Event listener for mouse leave (to stop drawing when the mouse leaves the canvas)
+        canvas.addEventListener('mouseleave', () => {
+            isDrawing = false;
+        });
+
+        // Prevent right-click context menu on the canvas
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+
+        // Event listener to increase the line width
+        increaseWidthButton.addEventListener('click', () => {
+            lineWidth += 2; // You can adjust the increment as needed
+            updateLineWidth();
+        });
+
+        // Event listener to decrease the line width
+        decreaseWidthButton.addEventListener('click', () => {
+            if (lineWidth > 2) {
+                lineWidth -= 2; // You can adjust the decrement as needed
+                updateLineWidth();
+            }
+        });
+
+        // Event listener to toggle eraser mode
+        eraserToggleButton.addEventListener('click', () => {
+            isErasing = !isErasing;
+            eraserToggleButton.innerText = isErasing ? "Eraser" : "Pen";
+        });
+
+        // Event listener to update pen color
+        colorPicker.addEventListener('input', () => {
+            updatePenColor();
+        });
+
+        // Event listener to clear the entire canvas
+        clearCanvasButton.addEventListener('click', () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        });
+    </script>
+</body>
+</html>
