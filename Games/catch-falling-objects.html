@@ -11,13 +11,16 @@ set_orientation('vertical')
 set_window_color('rgb(23,23,23)')
 set_scale(0.87)
 
+step = 1/60
+deltaTimer = 0
+
 #Variables
 speed = 0.0075
 fallingSpeed = 0.0295
 score = 0
 lives = 3
 
-def update():
+def delta_step():
     score_text.text = `Score: ${score}`
     lives_text.text = `Lives: ${lives}`
     #Failed
@@ -43,6 +46,19 @@ def update():
                 fallingObject.x=x_coord
     if lives <= 0:
         gameOver_text.y = 0
+
+deltaTimer = 0
+def update():
+    #Used to fix the deltaTimer turning NaN for some reason
+    if isNaN(deltaTimer):
+        deltaTimer = 0
+
+    deltaTimer += delta_time
+
+    if deltaTimer > step:
+        delta_step()
+        deltaTimer = 0
+
     
 
 catcher = Entity(color=color.gray, scale=[0.15,0.025], y=-.7)

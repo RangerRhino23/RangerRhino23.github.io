@@ -12,10 +12,15 @@
 </script>
 <script type="text/sunsnake">
 
+#Ranger sux
+
 #Global Functions
 set_orientation('vertical')
 set_window_color('gray')
 set_background_color('black')
+
+step = 1/60
+
 row1 = -.4
 row2 = -.13
 row3 = .13
@@ -53,25 +58,39 @@ def tileGen():
     if tileCooldown <= 1:
         tileCooldown = 25
         Tile()
-def update():
+
+deltaTimer = 0
+
+def delta_step():
     if playing:
-        if lives >= 1:
-            tileGen()
-            #Text updates
-            score_text.text = `Score: ${score}`
-            lives_text.text = `Lives: ${lives}`
-            #Tile Movement
-            for tile in tiles:
-                if tile.y >= -1.2:
-                    tile.y -= tileSpeed
-                if tile.y <= -1.2:
-                    tiles.remove(tile)
-                    destroy(tile)
-                    lives -= 1
+    if lives >= 1:
+        tileGen()
+        #Text updates
+        score_text.text = `Score: ${score}`
+        lives_text.text = `Lives: ${lives}`
+        #Tile Movement
+        for tile in tiles:
+            if tile.y >= -1.2:
+                tile.y -= tileSpeed
+            if tile.y <= -1.2:
+                tiles.remove(tile)
+                destroy(tile)
+                lives -= 1
     if lives <= 0:
         gameOver_text.y = 0
         playagain_btn.y = -.3
         playing = false
+
+def update():
+    #Used to fix the deltaTimer turning NaN for some reason
+    if isNaN(deltaTimer):
+        deltaTimer = 0
+
+    deltaTimer += delta_time
+
+    if deltaTimer > step:
+        delta_step()
+        deltaTimer = 0
 
 
 title = Text(text='Piano Tiles', text_origin=[0,0], scale=0.75, y=.35, text_size=7, text_color=color.white)

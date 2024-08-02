@@ -20,8 +20,9 @@ set_background_color('black')
 #Add enemy spawn limit - DONE
 #Add different enemies - DONE
 #Add increasing difficulty - DONE
-#Add power-ups (Health Packs, Shoot Speed Upgrades) - PARTLY DONE
-
+#Add power-ups (Health Packs and Shoot Speed Upgrades) - DONE
+#Fix deltaTime for refresh rates higher than 60hz - DONE
+#Fix the spelling of "enemie", should be "enemy" and "enemies" plural - Not Done
 
 # Variables
 playerSpeed = 0.009
@@ -32,10 +33,12 @@ shootCooldownTime = 30
 enemieCooldown = 0
 enemieCooldownTime = 25
 healthCooldownTime = 2000
+speedCooldownTime = 800
 bossSpawnCooldown = 75
 enemies = []
 bullets = []
 healthPacks = []
+speedPacks = []
 bosses = []
 distance_2d = distance
 score = 00
@@ -209,6 +212,25 @@ def spawnHealthPack():
             healthPacks.remove(healthPack)
             health += 10
 
+def SpeedPack():
+    speedPack = Entity(scale=0.055,roundness=1, texture='shooter-assets/speedPack.png', x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000))
+    speedPacks.append(speedPack)
+    return speedPack
+
+def spawnSpeedPack()
+    speedCooldownTime -= 1
+    if speedCooldownTime <= 1:
+        speedCooldownTime = random_int(5000,1200)
+        speedPack = SpeedPack()
+    for speedPack in speedPacks:
+        dist = distance_2d(player.position, speedPack.position)
+        if dist <= 0.05:
+            destroy(speedPack)
+            speedPacks.remove(speedPack)
+            shootCooldownTime /= 2
+            after 8:
+                shootCooldownTime *= 2
+
 # Difficulty Increaser
 reqScore = 10
 bossSpawnScore = 300
@@ -227,7 +249,7 @@ def increaseDifficulty():
 after 1:
     start = True
 # Update Function
-def update():
+def delta_step():
     if can_play:
         playerMovement()
         crossToMouse()
@@ -243,6 +265,7 @@ def update():
             bulletAttack()
             enemieAttack()
             spawnHealthPack()
+            spawnSpeedPack()
             increaseDifficulty()
             if health <= 0:
                 gameOver_text.y = 0
@@ -259,8 +282,20 @@ def update():
                 if shootCooldown <= 0 and len(bullets) <= 50:
                     bullet = Bullet()
                     shootCooldown = shootCooldownTime
-        
-        
+
+step = 1/60
+deltaTimer = 0
+def update():
+    #Used to fix the deltaTimer turning NaN for some reason
+    if isNaN(deltaTimer):
+        deltaTimer = 0
+
+    deltaTimer += delta_time
+
+    if deltaTimer > step:
+        delta_step()
+        deltaTimer = 0
+
 # Input Function
 def input(key):
     if start:
