@@ -63,19 +63,19 @@ deltaTimer = 0
 
 def delta_step():
     if playing:
-    if lives >= 1:
-        tileGen()
-        #Text updates
-        score_text.text = `Score: ${score}`
-        lives_text.text = `Lives: ${lives}`
-        #Tile Movement
-        for tile in tiles:
-            if tile.y >= -1.2:
-                tile.y -= tileSpeed
-            if tile.y <= -1.2:
-                tiles.remove(tile)
-                destroy(tile)
-                lives -= 1
+        if lives >= 1:
+            tileGen()
+            #Text updates
+            score_text.text = `Score: ${score}`
+            lives_text.text = `Lives: ${lives}`
+            #Tile Movement
+            for tile in tiles:
+                if tile.y >= -1.2:
+                    tile.y -= tileSpeed
+                if tile.y <= -1.2:
+                    tiles.remove(tile)
+                    destroy(tile)
+                    lives -= 1
     if lives <= 0:
         gameOver_text.y = 0
         playagain_btn.y = -.3
