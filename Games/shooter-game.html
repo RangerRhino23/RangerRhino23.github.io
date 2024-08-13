@@ -24,6 +24,7 @@ set_background_color('black')
 #Fix deltaTime for refresh rates higher than 60hz - DONE
 #Fix the spelling of "enemie", should be "enemy" and "enemies" plural - Not Done
 
+
 # Variables
 playerSpeed = 0.009
 enemieSpeed = 0.0009
@@ -91,11 +92,11 @@ def bulletAttack():
 def Enemie():
     if len(enemies) <= 30:
         if random_int(0,4) == 1:
-            enemie = Entity(scale=0.075, texture='shooter-assets/enemieSpeed.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*6, health=10, score=1, id="speed")
+            enemie = Entity(scale=0.075, texture='shooter-assets/enemieSpeed.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*6, health=10, damage=10, score=1, id="speed")
         elif random_int(0,10) == 1:
-            enemie = Entity(scale=0.075, texture='shooter-assets/enemieTank.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*0.85, health=50, score=4, id="tank")
+            enemie = Entity(scale=0.075, texture='shooter-assets/enemieTank.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed*0.85, health=50, damage=10, score=4, id="tank")
         else:
-            enemie = Entity(scale=0.075, texture='shooter-assets/enemie.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed, health=10, score=2, id="normal")
+            enemie = Entity(scale=0.075, texture='shooter-assets/enemie.png', roundness=1, x=(random_int(-400,400)/1000),y=(random_int(-400,400)/1000), speed=enemieSpeed, health=10, score=2, damage=10, id="normal")
         dist = distance_2d(player.position, enemie.position)
         if dist <= 0.45:
             destroy(enemie)
@@ -132,7 +133,7 @@ def bossMovement():
         bossSpawnCooldown -= 1
         if bossSpawnCooldown <= 0:
             bossSpawnCooldown = 75
-            enemie = Entity(scale=0.055, texture='shooter-assets/enemieSpeed.png', roundness=1, x=boss.x+(random_int(-40,40)/100),y=boss.y+(random_int(-40,40)/100), speed=enemieSpeed*12, health=10, score=0)
+            enemie = Entity(scale=0.055, texture='shooter-assets/enemieSpeed.png', roundness=1, x=boss.x+(random_int(-40,40)/100),y=boss.y+(random_int(-40,40)/100), speed=enemieSpeed*12, health=10, score=0, damage=5)
             enemies.append(enemie)
 
 
@@ -148,6 +149,7 @@ def bossAttack():
             player.x += (velocity_x*-35)
             player.y += (velocity_y*-35)
             health -= 20
+            boss.scale = 0.175-(400/20)
 
 # Enemie Movement
 def enemieMovement():
@@ -166,7 +168,7 @@ def enemieAttack():
         if dist <= enemie.scale[0]-0.025:
             destroy(enemie)
             enemies.remove(enemie)
-            health -= 10
+            health -= enemie.damage
 
 # Player Movement
 def playerMovement():
@@ -203,7 +205,7 @@ def HealthPack():
 def spawnHealthPack():
     healthCooldownTime -= 1
     if healthCooldownTime <= 1:
-        healthCooldownTime = random_int(8000,1400)
+        healthCooldownTime = random_int(800,1000)
         healthPack = HealthPack()
     for healthPack in healthPacks:
         dist = distance_2d(player.position, healthPack.position)
@@ -246,6 +248,26 @@ def increaseDifficulty():
             boss = Boss()
 
 
+
+#LocalLeaderBoard code
+def set_localStorage():
+    prev_score = localStorage.setItem('sg_prev_score',0)
+
+def get_localStorage():
+    prev_score = localStorage.getItem('sg_prev_score')
+
+def save_localStorage():
+    localStorage.setItem('sg_prev_score',score)
+
+
+if localStorage.getItem('sg_prev_score') == null:
+    set_localStorage()
+else:
+    get_localStorage()
+
+
+prev_score = Text(text=`Best: ${prev_score}`, text_origin=[0,0], scale=0.75, text_size=3, text_color=color.white, y=0.4,x=.4)
+
 after 1:
     start = True
 # Update Function
@@ -253,6 +275,7 @@ def delta_step():
     if can_play:
         playerMovement()
         crossToMouse()
+        document.body.style.cursor = 'none'
         if start:
             shootCooldown -= 1
             enemieCooldown -= 1
@@ -270,6 +293,7 @@ def delta_step():
             if health <= 0:
                 gameOver_text.y = 0
                 can_play = False
+                save_localStorage()
             if enemieCooldown <= 0:
                 if len(bosses) > 0:
                     if random_int(0,40) == 1:

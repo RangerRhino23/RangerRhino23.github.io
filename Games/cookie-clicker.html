@@ -28,6 +28,8 @@ def delta_step():
 
 deltaTimer = 0
 def update():
+    if held_keys['space'] and isAdmin:
+        clicked_cookie()
     #Used to fix the deltaTimer turning NaN for some reason
     if isNaN(deltaTimer):
         deltaTimer = 0
@@ -42,12 +44,51 @@ def update():
 def input(key):
     if key == 'g' and isAdmin:
         score += 100
+    if key == 'space':
+        clicked_cookie()
 
-score = 0
-multiplier = 1
-multiplierCost = 100
-passive = 1
-passiveCost = 100
+def set_localStorage():
+    score = localStorage.setItem('cc_score',0)
+    multiplier = localStorage.setItem('cc_multiplier',1)
+    multiplierCost = localStorage.setItem('cc_multiplierCost',100)
+    passive = localStorage.setItem('cc_passive',1)
+    passiveCost = localStorage.setItem('cc_passiveCost',100)
+
+def get_localStorage():
+    score = localStorage.getItem('cc_score')
+    multiplier = localStorage.getItem('cc_multiplier')
+    multiplierCost = localStorage.getItem('cc_multiplierCost')
+    passive = localStorage.getItem('cc_passive')
+    passiveCost = localStorage.getItem('cc_passiveCost')
+
+def save_localStorage():
+    localStorage.setItem('cc_score',score)
+    localStorage.setItem('cc_multiplier',multiplier)
+    localStorage.setItem('cc_multiplierCost',multiplierCost)
+    localStorage.setItem('cc_passive',passive)
+    localStorage.setItem('cc_passiveCost',passiveCost)
+
+
+if localStorage.getItem('cc_score') == null:
+    set_localStorage()
+else:
+    get_localStorage()
+
+
+score = int(score)
+multiplier = int(multiplier)
+multiplierCost = int(multiplierCost)
+passive = int(passive)
+passiveCost = int(passiveCost)
+
+def clicked_cookie():
+    score += (1 * multiplier)
+    cookies_text.text = `Cookies: ${score}`
+    cookie.scale = .2
+    cookie.animate('scale_x', .18, duration=.1)
+    cookie.animate('scale_y', .18, duration=.1)
+    save_localStorage()
+
 cookies_text = Text(text='Cookies: 00', text_origin=[0,0], scale=0.75, y=.4, text_size=8, text_color=color.white)
 multiplierCost_text = Text(text='Multiplier Cost: 100', y=.075, x=.4, text_origin=[0,0], scale=0.75, text_size=2, text_color=color.white)
 passiveCost_text = Text(text='Multiplier Cost: 100', y=-.125, x=.4, text_origin=[0,0], scale=0.75, text_size=2, text_color=color.white)
@@ -55,11 +96,7 @@ cookie = Entity(texture='cookie-clicker-assets/cookie.png', scale=.2, x=-.5)
 cookie_text = Text(text='Click Me!', x=-.5,y=.175, text_origin=[0,0], scale=0.75, text_size=6, text_color=color.white)
 logo_text = Text(text='Cookie Clicker By: RangerRhino23', x=-.53,y=.475, text_origin=[0,0], scale=0.75, text_size=4, text_color=color.white)
 cookie.on_click = def():
-    score += (1 * multiplier)
-    cookies_text.text = `Cookies: ${score}`
-    cookie.scale = .2
-    cookie.animate('scale_x', .18, duration=.1)
-    cookie.animate('scale_y', .18, duration=.1)
+    clicked_cookie()
 
 cookieMaker = Entity(texture='cookie-clicker-assets/cookiemaker.png', scale=.2, x=.6,y=.1)
 cookieMaker.on_click = def():
@@ -70,6 +107,7 @@ cookieMaker.on_click = def():
         cookieMaker.scale = .2
         cookieMaker.animate('scale_x', .18, duration=.1)
         cookieMaker.animate('scale_y', .18, duration=.1)
+        save_localStorage()
 
 cookieMultiplyer = Entity(texture='cookie-clicker-assets/multiplier.png', scale=.2, x=.6, y=-.1)
 cookieMultiplyer.on_click = def():
@@ -80,6 +118,7 @@ cookieMultiplyer.on_click = def():
         cookieMultiplyer.scale = .2
         cookieMultiplyer.animate('scale_x', .18, duration=.1)
         cookieMultiplyer.animate('scale_y', .18, duration=.1)
+        save_localStorage()
 
  
 </script><script src="taptapir/sunsnake_compiler.js"></script></html>

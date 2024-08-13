@@ -46,6 +46,11 @@ def delta_step():
                 fallingObject.x=x_coord
     if lives <= 0:
         gameOver_text.y = 0
+        prev_score = localStorage.getItem('cfo_prev_score')
+        prev_best_text.text = `Previous Score: ${prev_score}`
+        prev_best_text.y = 0.1
+        if score > prev_score:
+            localStorage.setItem('cfo_prev_score', score)
 
 deltaTimer = 0
 def update():
@@ -69,5 +74,6 @@ lives_text = Text(text='Lives: 03', text_origin=[0,0], scale=0.75, y=-.85, text_
 
 fallingObject = Entity(x=0,y=.92,color=color, scale=0.05)
 gameOver_text = Text(text='Game Over!', text_origin=[0,0], scale=0.75, text_size=8, text_color=color.white, y=-1)
+prev_best_text = Text(text='Previous Score: ', text_origin=[0,0], scale=0.75, text_size=3, text_color=color.white, y=-1)
 
     </script><script src="taptapir/sunsnake_compiler.js"></script></html>
