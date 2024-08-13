@@ -11,8 +11,13 @@ set_orientation('horizontal')
 set_window_color('rgb(23,23,23)')
 set_scale(0.95)
 
+isAdmin = false
+
+step = 1/60
+
 cookie_cooldown = 0
-def update():
+
+def delta_step():
     cookie_cooldown += 1
     if cookie_cooldown==50:
         cookie_cooldown = 0
@@ -21,9 +26,23 @@ def update():
     multiplierCost_text.text = `Multiplier Cost: ${multiplierCost}`
     passiveCost_text.text = `Cooker Cost: ${passiveCost}`
 
+deltaTimer = 0
+def update():
+    #Used to fix the deltaTimer turning NaN for some reason
+    if isNaN(deltaTimer):
+        deltaTimer = 0
+
+    deltaTimer += delta_time
+
+    if deltaTimer > step:
+        delta_step()
+        deltaTimer = 0
+
+
 def input(key):
-    if key == 'g':
-    score += 100
+    if key == 'g' and isAdmin:
+        score += 100
+
 score = 0
 multiplier = 1
 multiplierCost = 100
@@ -41,6 +60,7 @@ cookie.on_click = def():
     cookie.scale = .2
     cookie.animate('scale_x', .18, duration=.1)
     cookie.animate('scale_y', .18, duration=.1)
+
 cookieMaker = Entity(texture='cookie-clicker-assets/cookiemaker.png', scale=.2, x=.6,y=.1)
 cookieMaker.on_click = def():
     if score>=multiplierCost:
@@ -50,6 +70,7 @@ cookieMaker.on_click = def():
         cookieMaker.scale = .2
         cookieMaker.animate('scale_x', .18, duration=.1)
         cookieMaker.animate('scale_y', .18, duration=.1)
+
 cookieMultiplyer = Entity(texture='cookie-clicker-assets/multiplier.png', scale=.2, x=.6, y=-.1)
 cookieMultiplyer.on_click = def():
     if score>=passiveCost:
@@ -60,9 +81,5 @@ cookieMultiplyer.on_click = def():
         cookieMultiplyer.animate('scale_x', .18, duration=.1)
         cookieMultiplyer.animate('scale_y', .18, duration=.1)
 
-
-
-
-
-     
-    </script><script src="taptapir/sunsnake_compiler.js"></script></html>
+ 
+</script><script src="taptapir/sunsnake_compiler.js"></script></html>

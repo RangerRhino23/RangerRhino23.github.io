@@ -15,8 +15,10 @@ set_scale(0.95)
 #Variables
 dx = 0.005
 dy = 0.005
+step = 1/60
+deltaTimer = 0
 
-def update():
+def delta_step():
     #lpaddle movement
     if held_keys['w']:
         if lpaddle.y <= 0.4:
@@ -50,6 +52,19 @@ def update():
     if ball.x <= lwall.x:
         dy = 0
         dx = 0
+
+deltaTimer = 0
+def update():
+    #Used to fix the deltaTimer turning NaN for some reason
+    if isNaN(deltaTimer):
+        deltaTimer = 0
+
+    deltaTimer += delta_time
+
+    if deltaTimer > step:
+        delta_step()
+        deltaTimer = 0
+
 
 ball = Entity(roundness=.25, color=color.white, scale=0.025)
 
