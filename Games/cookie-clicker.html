@@ -48,11 +48,12 @@ def input(key):
         clicked_cookie()
 
 def set_localStorage():
-    score = localStorage.setItem('cc_score',0)
-    multiplier = localStorage.setItem('cc_multiplier',1)
-    multiplierCost = localStorage.setItem('cc_multiplierCost',100)
-    passive = localStorage.setItem('cc_passive',1)
-    passiveCost = localStorage.setItem('cc_passiveCost',100)
+    localStorage.setItem('cc_score',0)
+    localStorage.setItem('cc_multiplier',1)
+    localStorage.setItem('cc_multiplierCost',100)
+    localStorage.setItem('cc_passive',1)
+    localStorage.setItem('cc_passiveCost',100)
+    get_localStorage()
 
 def get_localStorage():
     score = localStorage.getItem('cc_score')
